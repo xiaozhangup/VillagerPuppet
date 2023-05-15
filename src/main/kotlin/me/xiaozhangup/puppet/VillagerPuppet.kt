@@ -1,6 +1,8 @@
 package me.xiaozhangup.puppet
 
+import com.google.gson.Gson
 import me.xiaozhangup.puppet.loader.PuppetDataLoader
+import me.xiaozhangup.puppet.misc.Puppet
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
@@ -15,6 +17,7 @@ import java.util.*
 object VillagerPuppet : Plugin() {
 
     val plugin: BukkitPlugin by lazy { BukkitPlugin.getInstance() }
+    val gson: Gson by lazy { Gson() }
 
     override fun onEnable() {
         PuppetDataLoader.initAll()
@@ -42,6 +45,10 @@ object VillagerPuppet : Plugin() {
         val yaw = locData[4].toFloat()
         val pitch = locData[5].toFloat()
         return Location(world, x, y, z, yaw, pitch)
+    }
+
+    fun String.asPuppet(): Puppet {
+        return gson.fromJson(this, Puppet::class.java)
     }
 
 }

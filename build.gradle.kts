@@ -25,6 +25,7 @@ dependencies {
     compileOnly("ink.ptms:nms-all:1.0.0")
     compileOnly("ink.ptms.core:v11902:11902-minimize:mapped")
     compileOnly("ink.ptms.core:v11902:11902-minimize:universal")
+    compileOnly("com.google.code.gson:gson:2.10.1")
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree("libs"))
 }

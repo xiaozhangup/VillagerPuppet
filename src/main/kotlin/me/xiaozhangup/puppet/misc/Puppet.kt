@@ -1,10 +1,16 @@
 package me.xiaozhangup.puppet.misc
 
+import me.xiaozhangup.puppet.VillagerPuppet.gson
 import me.xiaozhangup.puppet.VillagerPuppet.toBase64
 import me.xiaozhangup.puppet.VillagerPuppet.toItemStack
 import me.xiaozhangup.puppet.VillagerPuppet.toLocation
 import org.bukkit.Location
+import org.bukkit.Material
+import org.bukkit.entity.ArmorStand
+import org.bukkit.entity.EntityType
 import org.bukkit.inventory.ItemStack
+import taboolib.platform.util.setEquipment
+import taboolib.type.BukkitEquipment
 import java.util.UUID
 
 data class Puppet(
@@ -66,6 +72,31 @@ data class Puppet(
 
     fun getLocation(): Location {
         return loc.toLocation()
+    }
+
+    fun spawn() {
+        // TODO: Move to Adyes
+        val spawn = this.getLocation()
+        val armorStand = spawn.world!!.spawnEntity(spawn, EntityType.ARMOR_STAND) as ArmorStand
+
+        armorStand.isSmall = true
+        armorStand.setArms(true)
+        armorStand.setBasePlate(false)
+        armorStand.setEquipment(BukkitEquipment.HAND, this.getHand())
+        armorStand.setEquipment(BukkitEquipment.HEAD, this.getHead())
+        armorStand.setEquipment(BukkitEquipment.CHEST, this.getChest())
+        armorStand.setEquipment(BukkitEquipment.LEGS, this.getLeg())
+        armorStand.setEquipment(BukkitEquipment.FEET, this.getBoot())
+        armorStand.customName = this.name // TODO: 使用多行来显示多内容
+    }
+
+    fun create() {
+
+        this.spawn()
+    }
+
+    fun asJson(): String {
+        return gson.toJson(this)
     }
 
 }
