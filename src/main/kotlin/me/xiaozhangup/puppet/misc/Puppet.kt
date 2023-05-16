@@ -4,6 +4,8 @@ import me.xiaozhangup.puppet.VillagerPuppet.gson
 import me.xiaozhangup.puppet.VillagerPuppet.toBase64
 import me.xiaozhangup.puppet.VillagerPuppet.toItemStack
 import me.xiaozhangup.puppet.VillagerPuppet.toLocation
+import me.xiaozhangup.puppet.loader.PuppetDataLoader.add
+import me.xiaozhangup.puppet.loader.PuppetDataLoader.delete
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.ArmorStand
@@ -30,19 +32,24 @@ data class Puppet(
 ) {
     //可能会有姿态的类型，但现在不是实现的时候
     fun getHead(): ItemStack {
+        if (head.isEmpty()) return ItemStack(Material.AIR)
         return head.toItemStack()
     }
     fun getChest(): ItemStack {
+        if (chest.isEmpty()) return ItemStack(Material.AIR)
         return chest.toItemStack()
     }
     fun getLeg(): ItemStack {
+        if (leg.isEmpty()) return ItemStack(Material.AIR)
         return leg.toItemStack()
     }
     fun getBoot(): ItemStack {
+        if (boot.isEmpty()) return ItemStack(Material.AIR)
         return boot.toItemStack()
     }
 
     fun getHand(): ItemStack {
+        if (hand.isEmpty()) return ItemStack(Material.AIR)
         return hand.toItemStack()
     }
 
@@ -88,10 +95,17 @@ data class Puppet(
         armorStand.setEquipment(BukkitEquipment.LEGS, this.getLeg())
         armorStand.setEquipment(BukkitEquipment.FEET, this.getBoot())
         armorStand.customName = this.name // TODO: 使用多行来显示多内容
+        armorStand.isCustomNameVisible = true
+
+        this.add()
+    }
+
+    fun despawn() {
+        this.delete()
     }
 
     fun create() {
-
+        // TODO: 创建对应类型的东西
         this.spawn()
     }
 

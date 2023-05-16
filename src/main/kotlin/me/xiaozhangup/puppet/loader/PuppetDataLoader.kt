@@ -66,7 +66,7 @@ object PuppetDataLoader {
         }
     }
 
-    private fun World.savePuppets() {
+    fun World.savePuppets() {
         val world = this
         val ps = puppets[world]
 
@@ -79,6 +79,7 @@ object PuppetDataLoader {
             }
             ps?.forEach { puppet ->
                 val pc = File(dataPath, puppet.uuid.toString())
+                pc.createNewFile()
                 pc.writeText(puppet.asJson())
             }
         }
@@ -117,13 +118,25 @@ object PuppetDataLoader {
     }
 
     fun Puppet.add() {
-        puppets[this.getLocation().world]?.let {
-            it += this
+        val w = this.getLocation().world
+        w?.let { ww: World ->
+            puppets[ww]?.let {
+                val ll = it
+                ll += this
+                puppets[ww] = ll
+            }
         }
     }
 
     fun Puppet.delete() {
-        puppets[this.getLocation().world]?.removeIf { uuid == this.uuid }
+        val w = this.getLocation().world
+        w?.let { ww: World ->
+            puppets[ww]?.let {
+                val ll = it
+                ll.removeIf { uuid == this.uuid }
+                puppets[ww] = ll
+            }
+        }
     }
 
     private fun Player.faceTo(): Float {

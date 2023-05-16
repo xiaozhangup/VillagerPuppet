@@ -2,6 +2,7 @@ package me.xiaozhangup.puppet
 
 import com.google.gson.Gson
 import me.xiaozhangup.puppet.loader.PuppetDataLoader
+import me.xiaozhangup.puppet.loader.PuppetDataLoader.savePuppets
 import me.xiaozhangup.puppet.misc.Puppet
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -21,6 +22,12 @@ object VillagerPuppet : Plugin() {
 
     override fun onEnable() {
         PuppetDataLoader.initAll()
+    }
+
+    override fun onDisable() {
+        Bukkit.getWorlds().forEach { world ->
+            world.savePuppets()
+        }
     }
 
     fun ItemStack.toBase64(): String {
