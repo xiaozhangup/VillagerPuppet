@@ -1,6 +1,9 @@
 package me.xiaozhangup.puppet.misc
 
+import ink.ptms.adyeshach.core.entity.EntityTypes
+import ink.ptms.adyeshach.core.entity.type.AdyArmorStand
 import me.xiaozhangup.puppet.VillagerPuppet.gson
+import me.xiaozhangup.puppet.VillagerPuppet.manager
 import me.xiaozhangup.puppet.VillagerPuppet.toBase64
 import me.xiaozhangup.puppet.VillagerPuppet.toItemStack
 import me.xiaozhangup.puppet.VillagerPuppet.toLocation
@@ -8,11 +11,8 @@ import me.xiaozhangup.puppet.loader.PuppetDataLoader.add
 import me.xiaozhangup.puppet.loader.PuppetDataLoader.delete
 import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.entity.ArmorStand
-import org.bukkit.entity.EntityType
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
-import taboolib.platform.util.setEquipment
-import taboolib.type.BukkitEquipment
 import java.util.UUID
 
 data class Puppet(
@@ -82,30 +82,33 @@ data class Puppet(
     }
 
     fun spawn() {
-        // TODO: Move to Adyes
         val spawn = this.getLocation()
-        val armorStand = spawn.world!!.spawnEntity(spawn, EntityType.ARMOR_STAND) as ArmorStand
 
-        armorStand.isSmall = true
-        armorStand.setArms(true)
-        armorStand.setBasePlate(false)
-        armorStand.setEquipment(BukkitEquipment.HAND, this.getHand())
-        armorStand.setEquipment(BukkitEquipment.HEAD, this.getHead())
-        armorStand.setEquipment(BukkitEquipment.CHEST, this.getChest())
-        armorStand.setEquipment(BukkitEquipment.LEGS, this.getLeg())
-        armorStand.setEquipment(BukkitEquipment.FEET, this.getBoot())
-        armorStand.customName = this.name // TODO: 使用多行来显示多内容
-        armorStand.isCustomNameVisible = true
+        manager.create(EntityTypes.ARMOR_STAND, spawn) {
+            it as AdyArmorStand
+            it.id = this.uuid.toString()
+            it.setCustomName(this.name) // TODO: 使用多行来显示多内容
+            it.setCustomNameVisible(true)
+            it.setSmall(true)
+            it.setArms(true)
+            it.setBasePlate(false)
+            it.setEquipment(EquipmentSlot.HAND, this.getHand())
+            it.setEquipment(EquipmentSlot.HEAD, this.getHead())
+            it.setEquipment(EquipmentSlot.CHEST, this.getChest())
+            it.setEquipment(EquipmentSlot.LEGS, this.getLeg())
+            it.setEquipment(EquipmentSlot.FEET, this.getBoot())
+        } as AdyArmorStand
 
         this.add()
     }
 
-    fun despawn() {
+    fun despawn() { //这个更类似于打掉某个精灵，通常不必调用
+        manager.getEntityById(this.uuid.toString()).forEach { it.remove() }
         this.delete()
     }
 
-    fun create() {
-        // TODO: 创建对应类型的东西
+    fun create() { //注意！此方法仅仅在创建一个新的精灵时调用，如果要生成，请直接用 spawn()
+        // TODO: 创建对应类型的对象
         this.spawn()
     }
 

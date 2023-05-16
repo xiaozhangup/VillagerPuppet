@@ -1,34 +1,32 @@
 package me.xiaozhangup.puppet.loader
 
 import me.xiaozhangup.puppet.VillagerPuppet.asPuppet
+import me.xiaozhangup.puppet.VillagerPuppet.putElement
+import me.xiaozhangup.puppet.VillagerPuppet.removeElement
 import me.xiaozhangup.puppet.VillagerPuppet.toRawString
 import me.xiaozhangup.puppet.misc.Puppet
 import me.xiaozhangup.puppet.misc.PuppetType
 import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.World
-import org.bukkit.entity.ArmorStand
-import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.world.WorldLoadEvent
 import org.bukkit.event.world.WorldUnloadEvent
 import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.submitAsync
-import taboolib.platform.util.setEquipment
-import taboolib.type.BukkitEquipment
 import java.io.File
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.collections.HashMap
 
 object PuppetDataLoader {
 
-    private val puppets: HashMap<World, MutableList<Puppet>> = HashMap()
+    private val puppets: ConcurrentHashMap<World, MutableList<Puppet>> = ConcurrentHashMap()
 
     @SubscribeEvent
     fun load(e: WorldLoadEvent) {
         submitAsync {
-            e.world.init()
+            e.world.setup()
         }
     }
 
@@ -39,30 +37,31 @@ object PuppetDataLoader {
         }
     }
 
+    fun initAll() {
+        for (world in Bukkit.getWorlds()) {
+            world.setup()
+        }
+    }
+
     fun World.puppets(): MutableList<Puppet>? {
         return puppets[this]
     }
 
-    fun initAll() {
-        submitAsync {
-            for (world in Bukkit.getWorlds()) {
-                world.init()
-            }
-        }
-    }
-
-    private fun World.init() {
+    private fun World.setup() {
         val world = this
         val dataPath = File(world.worldFolder.path + "/puppets")
         if (!dataPath.exists() || !dataPath.isDirectory) {
             dataPath.mkdirs()
         } else {
-            val ps = mutableListOf<Puppet>()
-            dataPath.listFiles()?.forEach { file ->
-                ps += file.readText().asPuppet()
+            dataPath.listFiles()?.let { files ->
+                for (file in files) {
+                    try {
+                        file.readText().asPuppet().spawn()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
             }
-            puppets[world] = ps
-            ps.forEach { it.spawn() }
         }
     }
 
@@ -119,23 +118,15 @@ object PuppetDataLoader {
 
     fun Puppet.add() {
         val w = this.getLocation().world
-        w?.let { ww: World ->
-            puppets[ww]?.let {
-                val ll = it
-                ll += this
-                puppets[ww] = ll
-            }
+        w?.let { ww ->
+            puppets.putElement(ww, this)
         }
     }
 
     fun Puppet.delete() {
         val w = this.getLocation().world
-        w?.let { ww: World ->
-            puppets[ww]?.let {
-                val ll = it
-                ll.removeIf { uuid == this.uuid }
-                puppets[ww] = ll
-            }
+        w?.let { ww ->
+            puppets.removeElement(ww, this)
         }
     }
 

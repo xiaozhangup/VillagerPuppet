@@ -1,6 +1,8 @@
 package me.xiaozhangup.puppet
 
 import com.google.gson.Gson
+import ink.ptms.adyeshach.core.Adyeshach
+import ink.ptms.adyeshach.core.entity.manager.ManagerType
 import me.xiaozhangup.puppet.loader.PuppetDataLoader
 import me.xiaozhangup.puppet.loader.PuppetDataLoader.savePuppets
 import me.xiaozhangup.puppet.misc.Puppet
@@ -19,6 +21,7 @@ object VillagerPuppet : Plugin() {
 
     val plugin: BukkitPlugin by lazy { BukkitPlugin.getInstance() }
     val gson: Gson by lazy { Gson() }
+    val manager by lazy { Adyeshach.api().getPublicEntityManager(ManagerType.TEMPORARY) }
 
     override fun onEnable() {
         PuppetDataLoader.initAll()
@@ -57,5 +60,20 @@ object VillagerPuppet : Plugin() {
     fun String.asPuppet(): Puppet {
         return gson.fromJson(this, Puppet::class.java)
     }
+
+    fun <K, T> MutableMap<K, MutableList<T>>.putElement(key: K, element: T) {
+        val value = this[key]
+        if (value != null) {
+            value += element
+        } else this[key] = arrayListOf(element)
+    }
+
+    fun <K, T> MutableMap<K, MutableList<T>>.removeElement(key: K, element: T) {
+        val value = this[key]
+        if (value != null) {
+            value -= element
+        } else this[key] = arrayListOf(element)
+    }
+
 
 }

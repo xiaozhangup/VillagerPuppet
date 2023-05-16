@@ -15,6 +15,18 @@ taboolib {
     install("expansion-command-helper")
     classifier = null
     version = "6.0.10-118"
+
+    description {
+        bukkitApi("1.19")
+
+        contributors {
+            name("xiaozhangup")
+        }
+
+        dependencies {
+            name("Adyeshach")
+        }
+    }
 }
 
 repositories {
@@ -26,6 +38,7 @@ dependencies {
     compileOnly("ink.ptms.core:v11902:11902-minimize:mapped")
     compileOnly("ink.ptms.core:v11902:11902-minimize:universal")
     compileOnly("com.google.code.gson:gson:2.10.1")
+    compileOnly("ink.ptms.adyeshach:all:2.0.0-snapshot-1")
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree("libs"))
 }
