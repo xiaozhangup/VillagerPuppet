@@ -102,6 +102,8 @@ object PuppetDataLoader {
             if (block.isPassable) return
 
             val loc = block.location.clone().add(0.5, 1.0, 0.5)
+
+            //防止重复放置代码
             finder.getNearestEntity(loc)?.let {
                 if (it.id.startsWith("puppet-") && it.getLocation().distance(loc) < 1) return
             }
@@ -109,11 +111,12 @@ object PuppetDataLoader {
             loc.yaw = this.faceTo()
 
             // TODO: 基于物品解析
+            val type = PuppetType.MINER
             val puppet = Puppet(
                 UUID.randomUUID(),
                 this.uniqueId,
                 loc.toRawString(),
-                PuppetType.MINER,
+                type,
                 HashMap(),
                 0,
                 mutableListOf(),
@@ -121,7 +124,7 @@ object PuppetDataLoader {
                 "",
                 "",
                 "",
-                "${this.name} 的精灵",
+                "${this.name} 的${type.cn}精灵",
             )
             puppet.create()
         }
