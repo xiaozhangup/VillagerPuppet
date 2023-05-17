@@ -2,6 +2,7 @@ package me.xiaozhangup.puppet
 
 import com.google.gson.Gson
 import ink.ptms.adyeshach.core.Adyeshach
+import ink.ptms.adyeshach.core.AdyeshachEntityFinder
 import ink.ptms.adyeshach.core.entity.manager.ManagerType
 import me.xiaozhangup.puppet.loader.PuppetDataLoader
 import me.xiaozhangup.puppet.loader.PuppetDataLoader.savePuppets
@@ -22,6 +23,7 @@ object VillagerPuppet : Plugin() {
     val plugin: BukkitPlugin by lazy { BukkitPlugin.getInstance() }
     val gson: Gson by lazy { Gson() }
     val manager by lazy { Adyeshach.api().getPublicEntityManager(ManagerType.TEMPORARY) }
+    val finder by lazy { Adyeshach.api().getEntityFinder() }
 
     override fun onEnable() {
         PuppetDataLoader.initAll()
@@ -72,7 +74,7 @@ object VillagerPuppet : Plugin() {
         val value = this[key]
         if (value != null) {
             value -= element
-        } else this[key] = arrayListOf(element)
+        }
     }
 
 

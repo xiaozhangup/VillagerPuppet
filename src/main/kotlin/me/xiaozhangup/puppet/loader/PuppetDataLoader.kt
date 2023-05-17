@@ -1,6 +1,10 @@
 package me.xiaozhangup.puppet.loader
 
+import ink.ptms.adyeshach.core.bukkit.BukkitRotation
+import ink.ptms.adyeshach.core.entity.type.AdyArmorStand
 import me.xiaozhangup.puppet.VillagerPuppet.asPuppet
+import me.xiaozhangup.puppet.VillagerPuppet.finder
+import me.xiaozhangup.puppet.VillagerPuppet.manager
 import me.xiaozhangup.puppet.VillagerPuppet.putElement
 import me.xiaozhangup.puppet.VillagerPuppet.removeElement
 import me.xiaozhangup.puppet.VillagerPuppet.toRawString
@@ -12,12 +16,15 @@ import org.bukkit.entity.Player
 import org.bukkit.event.world.WorldLoadEvent
 import org.bukkit.event.world.WorldUnloadEvent
 import org.bukkit.inventory.ItemStack
+import org.bukkit.util.EulerAngle
+import taboolib.common.LifeCycle
+import taboolib.common.platform.Awake
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.submitAsync
 import java.io.File
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
-import kotlin.collections.HashMap
+import kotlin.math.sin
 
 object PuppetDataLoader {
 
@@ -33,6 +40,7 @@ object PuppetDataLoader {
     @SubscribeEvent
     fun unload(e: WorldUnloadEvent) {
         submitAsync {
+            puppets[e.world]?.forEach { it.despawn() }
             e.world.savePuppets()
         }
     }
@@ -94,6 +102,10 @@ object PuppetDataLoader {
             if (block.isPassable) return
 
             val loc = block.location.clone().add(0.5, 1.0, 0.5)
+            finder.getNearestEntity(loc)?.let {
+                if (it.id.startsWith("puppet-") && it.getLocation().distance(loc) < 1) return
+            }
+
             loc.yaw = this.faceTo()
 
             // TODO: 基于物品解析
@@ -105,7 +117,6 @@ object PuppetDataLoader {
                 HashMap(),
                 0,
                 mutableListOf(),
-                "",
                 "",
                 "",
                 "",
@@ -130,6 +141,23 @@ object PuppetDataLoader {
         }
     }
 
+    fun Puppet.update() {
+        val w = this.getLocation().world
+        val puppet = this
+        w?.let { ww ->
+            puppets[ww]?.removeIf { it.uuid == puppet.uuid }
+            puppets.putElement(ww, puppet)
+        }
+    }
+
+    fun getPuppet(id: String, world: World): Puppet? {
+        return puppets[world]?.firstOrNull { it.uuid.toString() == id }
+    }
+
+    fun String.asPuppet(world: World): Puppet? {
+        return puppets[world]?.firstOrNull { it.uuid.toString() == this }
+    }
+
     private fun Player.faceTo(): Float {
         if (this.location.yaw in -135.0..-45.0) return 90.0f
         if (this.location.yaw in -45.0..45.0) return 180.0f
@@ -138,4 +166,18 @@ object PuppetDataLoader {
         return 0.0f
     }
 
+
+    @Awake(LifeCycle.ENABLE)
+    fun action() {
+        submitAsync(period = 6) {
+            for (list in puppets.values) {
+                for (puppet in list) {
+                    val entity = manager.getEntityById("puppet-" + puppet.uuid.toString()).firstOrNull() as AdyArmorStand
+                    if (entity.hasViewer()) {
+                        entity.setRotation(BukkitRotation.RIGHT_ARM, EulerAngle(24 * sin(System.currentTimeMillis() / 300.0), 0.0, 0.0))
+                    }
+                }
+            }
+        }
+    }
 }

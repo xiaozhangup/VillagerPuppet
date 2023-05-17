@@ -11,8 +11,11 @@ import me.xiaozhangup.puppet.loader.PuppetDataLoader.add
 import me.xiaozhangup.puppet.loader.PuppetDataLoader.delete
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.block.Skull
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
+import taboolib.platform.util.ItemBuilder
+import taboolib.platform.util.buildItem
 import java.util.UUID
 
 data class Puppet(
@@ -23,17 +26,17 @@ data class Puppet(
     val data: HashMap<String, String>,
     var level: Int,
     var items: MutableList<String>,
-    var head: String,
     var chest: String,
     var leg: String,
     var boot: String,
-    var hand: String,
+    var offhand: String,
     var name: String
 ) {
     //可能会有姿态的类型，但现在不是实现的时候
     fun getHead(): ItemStack {
-        if (head.isEmpty()) return ItemStack(Material.AIR)
-        return head.toItemStack()
+        return buildItem(Material.PLAYER_HEAD) {
+            skullTexture = ItemBuilder.SkullTexture(type.skull)
+        }
     }
     fun getChest(): ItemStack {
         if (chest.isEmpty()) return ItemStack(Material.AIR)
@@ -49,8 +52,8 @@ data class Puppet(
     }
 
     fun getHand(): ItemStack {
-        if (hand.isEmpty()) return ItemStack(Material.AIR)
-        return hand.toItemStack()
+        if (offhand.isEmpty()) return ItemStack(Material.AIR)
+        return offhand.toItemStack()
     }
 
     fun getItemsStore(): List<ItemStack> {
@@ -86,24 +89,28 @@ data class Puppet(
 
         manager.create(EntityTypes.ARMOR_STAND, spawn) {
             it as AdyArmorStand
-            it.id = this.uuid.toString()
+            it.id = "puppet-" + this.uuid.toString()
             it.setCustomName(this.name) // TODO: 使用多行来显示多内容
             it.setCustomNameVisible(true)
             it.setSmall(true)
             it.setArms(true)
             it.setBasePlate(false)
-            it.setEquipment(EquipmentSlot.HAND, this.getHand())
+            it.setEquipment(EquipmentSlot.OFF_HAND, this.getHand())
             it.setEquipment(EquipmentSlot.HEAD, this.getHead())
             it.setEquipment(EquipmentSlot.CHEST, this.getChest())
             it.setEquipment(EquipmentSlot.LEGS, this.getLeg())
             it.setEquipment(EquipmentSlot.FEET, this.getBoot())
-        } as AdyArmorStand
+        }
 
         this.add()
     }
 
-    fun despawn() { //这个更类似于打掉某个精灵，通常不必调用
-        manager.getEntityById(this.uuid.toString()).forEach { it.remove() }
+    fun despawn() { //让某个精灵消失
+        manager.getEntityById("puppet-" + this.uuid.toString()).forEach { it.remove() }
+    }
+
+    fun remove() { //打掉
+        this.despawn()
         this.delete()
     }
 
