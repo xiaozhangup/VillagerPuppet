@@ -2,10 +2,9 @@ package me.xiaozhangup.puppet
 
 import com.google.gson.Gson
 import ink.ptms.adyeshach.core.Adyeshach
-import ink.ptms.adyeshach.core.AdyeshachEntityFinder
 import ink.ptms.adyeshach.core.entity.manager.ManagerType
-import me.xiaozhangup.puppet.loader.PuppetDataLoader
-import me.xiaozhangup.puppet.loader.PuppetDataLoader.savePuppets
+import me.xiaozhangup.puppet.loader.PuppetData
+import me.xiaozhangup.puppet.loader.PuppetData.savePuppets
 import me.xiaozhangup.puppet.misc.Puppet
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -16,6 +15,7 @@ import taboolib.platform.BukkitPlugin
 import taboolib.platform.util.deserializeToItemStack
 import taboolib.platform.util.serializeToByteArray
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 
 object VillagerPuppet : Plugin() {
@@ -25,8 +25,10 @@ object VillagerPuppet : Plugin() {
     val manager by lazy { Adyeshach.api().getPublicEntityManager(ManagerType.TEMPORARY) }
     val finder by lazy { Adyeshach.api().getEntityFinder() }
 
+    val puppets: ConcurrentHashMap<World, MutableList<Puppet>> = ConcurrentHashMap()
+
     override fun onEnable() {
-        PuppetDataLoader.initAll()
+        PuppetData.initAll()
     }
 
     override fun onDisable() {
