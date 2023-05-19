@@ -1,10 +1,10 @@
 package me.xiaozhangup.puppet.loader
 
-import me.xiaozhangup.puppet.VillagerPuppet.asPuppet
 import me.xiaozhangup.puppet.VillagerPuppet.puppets
-import me.xiaozhangup.puppet.VillagerPuppet.putElement
-import me.xiaozhangup.puppet.VillagerPuppet.removeElement
 import me.xiaozhangup.puppet.misc.Puppet
+import me.xiaozhangup.puppet.utils.PUtils.asPuppet
+import me.xiaozhangup.puppet.utils.PUtils.putElement
+import me.xiaozhangup.puppet.utils.PUtils.removeElement
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.event.world.WorldLoadEvent

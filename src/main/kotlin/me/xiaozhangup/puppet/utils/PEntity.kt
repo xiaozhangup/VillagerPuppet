@@ -1,8 +1,8 @@
 package me.xiaozhangup.puppet.utils
 
 import me.xiaozhangup.puppet.VillagerPuppet
-import me.xiaozhangup.puppet.VillagerPuppet.toRawString
 import me.xiaozhangup.puppet.misc.Puppet
+import me.xiaozhangup.puppet.utils.PUtils.toRawString
 import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.entity.Player

@@ -2,15 +2,15 @@ package me.xiaozhangup.puppet.misc
 
 import ink.ptms.adyeshach.core.entity.EntityTypes
 import ink.ptms.adyeshach.core.entity.type.AdyArmorStand
-import me.xiaozhangup.puppet.PCommand.setMetaInt
-import me.xiaozhangup.puppet.PCommand.setMetaString
 import me.xiaozhangup.puppet.VillagerPuppet.gson
 import me.xiaozhangup.puppet.VillagerPuppet.manager
-import me.xiaozhangup.puppet.VillagerPuppet.toBase64
-import me.xiaozhangup.puppet.VillagerPuppet.toItemStack
-import me.xiaozhangup.puppet.VillagerPuppet.toLocation
 import me.xiaozhangup.puppet.loader.PuppetData.add
 import me.xiaozhangup.puppet.loader.PuppetData.delete
+import me.xiaozhangup.puppet.utils.PUtils.setMetaInt
+import me.xiaozhangup.puppet.utils.PUtils.setMetaString
+import me.xiaozhangup.puppet.utils.PUtils.toBase64
+import me.xiaozhangup.puppet.utils.PUtils.toItemStack
+import me.xiaozhangup.puppet.utils.PUtils.toLocation
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.inventory.EquipmentSlot
@@ -21,7 +21,7 @@ import java.util.*
 
 data class Puppet(
     val uuid: UUID,
-    var owner: UUID,
+    var owner: String,
     var loc: String,
     val type: PuppetType,
     val data: HashMap<String, String>,
@@ -118,10 +118,12 @@ data class Puppet(
     fun asItemStack(): ItemStack {
         val item = buildItem(getHead()) {
             name = "&f${type.cn}人偶"
-            lore += "&7右键放置到地上"
-            lore += "&7来使其工作"
+            lore += "&7右键放置到地上来使用"
             lore += ""
-            lore += "&e等级: &f$level"
+            lore += "&x&d&c&c&4&4&c类型: &f${type.cn}"
+            lore += "&x&d&c&c&4&4&c等级: &f$level"
+            lore += "&x&d&c&c&4&4&c描述:"
+            lore += "&7${type.doc}"
             colored()
         }
         item.setMetaString("type", type.toString())

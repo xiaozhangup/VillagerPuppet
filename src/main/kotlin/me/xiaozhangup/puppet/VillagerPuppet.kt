@@ -9,12 +9,9 @@ import me.xiaozhangup.puppet.misc.Puppet
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
-import org.bukkit.inventory.ItemStack
+import org.bukkit.entity.Player
 import taboolib.common.platform.Plugin
 import taboolib.platform.BukkitPlugin
-import taboolib.platform.util.deserializeToItemStack
-import taboolib.platform.util.serializeToByteArray
-import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 
@@ -37,47 +34,8 @@ object VillagerPuppet : Plugin() {
         }
     }
 
-    fun ItemStack.toBase64(): String {
-        return Base64.getEncoder().encodeToString(serializeToByteArray())
+    fun Player.hasPerm(location: Location): Boolean {
+        return true
     }
-
-    fun String.toItemStack(): ItemStack {
-        return Base64.getDecoder().decode(this).deserializeToItemStack()
-    }
-
-    fun Location.toRawString(): String {
-        val loc = this
-        return loc.world!!.name + ":" + loc.x + ":" + loc.y + ":" + loc.z + ":" + loc.yaw + ":" + loc.pitch
-    }
-
-    fun String.toLocation(): Location {
-        val locData = this.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        val world: World? = Bukkit.getWorld(locData[0])
-        val x = locData[1].toDouble()
-        val y = locData[2].toDouble()
-        val z = locData[3].toDouble()
-        val yaw = locData[4].toFloat()
-        val pitch = locData[5].toFloat()
-        return Location(world, x, y, z, yaw, pitch)
-    }
-
-    fun String.asPuppet(): Puppet {
-        return gson.fromJson(this, Puppet::class.java)
-    }
-
-    fun <K, T> MutableMap<K, MutableList<T>>.putElement(key: K, element: T) {
-        val value = this[key]
-        if (value != null) {
-            value += element
-        } else this[key] = arrayListOf(element)
-    }
-
-    fun <K, T> MutableMap<K, MutableList<T>>.removeElement(key: K, element: T) {
-        val value = this[key]
-        if (value != null) {
-            value -= element
-        }
-    }
-
 
 }

@@ -1,3 +1,5 @@
 package me.xiaozhangup.puppet.utils
 
-object PMessage
+object PMessage {
+
+}
