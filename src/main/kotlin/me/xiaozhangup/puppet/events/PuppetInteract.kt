@@ -12,23 +12,23 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
 import taboolib.common.platform.event.SubscribeEvent
-import java.util.*
 
 object PuppetInteract {
 
     @SubscribeEvent
     fun place(e: PlayerInteractEvent) {
-        if (e.hand != EquipmentSlot.HAND) return
-        if (e.blockFace != BlockFace.UP) return
-        if (e.action != Action.RIGHT_CLICK_BLOCK) return
-        val itemInMainHand = e.player.inventory.itemInMainHand
-
-        if (itemInMainHand.getMetaString("type").isNotEmpty()) {
+        val item = e.item
+        if (item != null && item.getMetaString("type").isNotEmpty()) {
             e.isCancelled = true
+
+            if (e.hand != EquipmentSlot.HAND) return
+            if (e.blockFace != BlockFace.UP) return
+            if (e.action != Action.RIGHT_CLICK_BLOCK) return
+
             val block = e.clickedBlock
             if (block == null || block.isPassable) return
-            e.player.tryPlacePuppet(itemInMainHand.asPuppet(e.player), block)
-            itemInMainHand.amount -= 1
+            e.player.tryPlacePuppet(item.asPuppet(e.player), block)
+            item.amount -= 1
         }
     }
 
@@ -37,7 +37,7 @@ object PuppetInteract {
         if (e.isMainHand) {
             if (e.entity.id.startsWith("puppet-")) {
                 val id = e.entity.id.replaceFirst("puppet-", "")
-                id.asPuppet(e.entity.world)?.let {  puppet: Puppet ->
+                id.asPuppet(e.entity.world)?.let { puppet: Puppet ->
                     if (puppet.owner == e.player.name || e.player.hasPerm(puppet.getLocation())) {
                         // TODO: OPEN Menu
                     }
