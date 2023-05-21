@@ -113,8 +113,8 @@ data class Puppet(
 
     fun display(string: String) {
         manager.getEntityById("puppet-" + this.uuid.toString()).forEach {
-            it.setCustomNameVisible(string.isNotEmpty())
             it.setCustomName(string)
+            it.setCustomNameVisible(string.isNotEmpty())
         }
     }
 
