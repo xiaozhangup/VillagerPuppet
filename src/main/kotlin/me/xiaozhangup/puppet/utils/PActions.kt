@@ -33,13 +33,13 @@ object PActions {
 
     @Awake(LifeCycle.ENABLE)
     fun event() {
-        submitAsync(period = 200) {
+        submitAsync(period = 60) {
             for (list in puppets.values) {
                 for (puppet in list) {
                     val entity = manager.getEntityById("puppet-" + puppet.uuid.toString()).firstOrNull() as AdyArmorStand
 
-                    submit(delay = (75 + Random.nextInt(60)).toLong()) {
-
+                    //多tick处理
+                    submit(delay = Random.nextInt(1, 30).toLong()) {
                         if (entity.getLocation().chunk.isLoaded) {
                             PuppetWorkEvent(puppet, puppet.type, entity).apply {
                                 call()

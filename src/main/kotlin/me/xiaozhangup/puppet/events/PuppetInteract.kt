@@ -3,10 +3,12 @@ package me.xiaozhangup.puppet.events
 import ink.ptms.adyeshach.core.event.AdyeshachEntityInteractEvent
 import me.xiaozhangup.puppet.VillagerPuppet.hasPerm
 import me.xiaozhangup.puppet.loader.PuppetData.asPuppet
+import me.xiaozhangup.puppet.loader.PuppetMenu.openControl
 import me.xiaozhangup.puppet.misc.Puppet
 import me.xiaozhangup.puppet.utils.PEntity.tryPlacePuppet
 import me.xiaozhangup.puppet.utils.PUtils.asPuppet
 import me.xiaozhangup.puppet.utils.PUtils.getMetaString
+import org.bukkit.Sound
 import org.bukkit.block.BlockFace
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
@@ -38,8 +40,10 @@ object PuppetInteract {
             if (e.entity.id.startsWith("puppet-")) {
                 val id = e.entity.id.replaceFirst("puppet-", "")
                 id.asPuppet(e.entity.world)?.let { puppet: Puppet ->
-                    if (puppet.owner == e.player.name || e.player.hasPerm(puppet.getLocation())) {
-                        // TODO: OPEN Menu
+                    val player = e.player
+                    if (puppet.owner == player.name || player.hasPerm(puppet.getLocation())) {
+                        puppet.openControl(player, e.entity)
+                        player.playSound(player.location, Sound.BLOCK_ANVIL_BREAK, 1f, 1f)
                     }
                 }
             }
