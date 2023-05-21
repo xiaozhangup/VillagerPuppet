@@ -117,7 +117,7 @@ data class Puppet(
 
     fun asItemStack(): ItemStack {
         val item = buildItem(getHead()) {
-            name = "&f${type.cn}人偶"
+            name = "&f${type.cn}人偶 &7(等级: $level)"
             lore += "&7右键放置到地上来使用"
             lore += ""
             lore += "&x&d&c&c&4&4&c类型: &f${type.cn}"

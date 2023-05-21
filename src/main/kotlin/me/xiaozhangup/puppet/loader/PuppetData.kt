@@ -95,14 +95,15 @@ object PuppetData {
         }
     }
 
-    fun Puppet.update() {
-        val w = this.getLocation().world
-        val puppet = this
-        w?.let { ww ->
-            puppets[ww]?.removeIf { it.uuid == puppet.uuid }
-            puppets.putElement(ww, puppet)
-        }
-    }
+//    我是傻逼
+//    fun Puppet.update() {
+//        val w = this.getLocation().world
+//        val puppet = this
+//        w?.let { ww ->
+//            puppets[ww]?.removeIf { it.uuid == puppet.uuid }
+//            puppets.putElement(ww, puppet)
+//        }
+//    }
 
     //获取等操作
 
