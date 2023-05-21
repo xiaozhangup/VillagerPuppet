@@ -111,6 +111,13 @@ data class Puppet(
         this.add()
     }
 
+    fun display(string: String) {
+        manager.getEntityById("puppet-" + this.uuid.toString()).forEach {
+            it.setCustomNameVisible(string.isNotEmpty())
+            it.setCustomName(string)
+        }
+    }
+
     fun despawn() { //让某个精灵消失
         manager.getEntityById("puppet-" + this.uuid.toString()).forEach { it.remove() }
     }

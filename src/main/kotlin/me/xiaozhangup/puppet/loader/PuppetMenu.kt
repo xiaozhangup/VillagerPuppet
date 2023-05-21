@@ -57,7 +57,9 @@ object PuppetMenu {
                 "xxxbbbbbx",
             )
 
-            set('b', buildItem(Material.values().random()))
+            set('b', buildItem(Material.COMMAND_BLOCK_MINECART) {
+                name = " "
+            })
             set('x', background_b)
             set('h', body)
             set('i', item)

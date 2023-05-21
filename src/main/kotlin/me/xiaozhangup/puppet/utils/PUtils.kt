@@ -3,10 +3,7 @@ package me.xiaozhangup.puppet.utils
 import me.xiaozhangup.puppet.VillagerPuppet
 import me.xiaozhangup.puppet.misc.Puppet
 import me.xiaozhangup.puppet.misc.PuppetType
-import org.bukkit.Bukkit
-import org.bukkit.Location
-import org.bukkit.NamespacedKey
-import org.bukkit.World
+import org.bukkit.*
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
@@ -99,5 +96,9 @@ object PUtils {
         pdc!!.persistentDataContainer.set(NamespacedKey(VillagerPuppet.plugin, key), PersistentDataType.INTEGER, value)
 
         this.itemMeta = pdc
+    }
+
+    fun String.applyColor(): String {
+        return ChatColor.translateAlternateColorCodes('&', this)
     }
 }
