@@ -14,8 +14,13 @@ object PCommand {
     @Awake(LifeCycle.ENABLE)
     fun reg() {
         command("puppet", permissionDefault = PermissionDefault.OP) {
-            execute<Player> {sender, _, _ ->
-                sender.giveItem(PuppetType.MINER.asItemStack())
+            dynamic(optional = true) {
+                suggestion<Player> { player, _ ->
+                    PuppetType.values().map { it.toString() }
+                }
+                execute<Player> { player, _, argument ->
+                    player.giveItem(PuppetType.valueOf(argument).asItemStack())
+                }
             }
         }
     }

@@ -6,6 +6,7 @@ import me.xiaozhangup.puppet.loader.PuppetData.asPuppet
 import me.xiaozhangup.puppet.loader.PuppetMenu.openControl
 import me.xiaozhangup.puppet.misc.Puppet
 import me.xiaozhangup.puppet.utils.PEntity.tryPlacePuppet
+import me.xiaozhangup.puppet.utils.PUtils.applyColor
 import me.xiaozhangup.puppet.utils.PUtils.asPuppet
 import me.xiaozhangup.puppet.utils.PUtils.getMetaString
 import org.bukkit.Sound
@@ -14,6 +15,7 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
 import taboolib.common.platform.event.SubscribeEvent
+import taboolib.platform.util.buildBook
 
 object PuppetInteract {
 
@@ -22,14 +24,31 @@ object PuppetInteract {
         val item = e.item
         if (item != null && item.getMetaString("type").isNotEmpty()) {
             e.isCancelled = true
+            val puppet = item.asPuppet(e.player)
 
             if (e.hand != EquipmentSlot.HAND) return
+            if (e.action != Action.RIGHT_CLICK_BLOCK) {
+                if (e.action == Action.LEFT_CLICK_AIR) {
+                    e.player.openBook(buildBook {
+                        title = "精灵文档"
+                        author = "VillagerPuppet"
+
+                        write(
+                            """&0&l${puppet.type.cn}的说明书
+                        |&7基本教程
+                        |
+                        |&0${puppet.type.book}
+                    """.trimMargin().applyColor()
+                        )
+                    })
+                }
+                return
+            }
             if (e.blockFace != BlockFace.UP) return
-            if (e.action != Action.RIGHT_CLICK_BLOCK) return
 
             val block = e.clickedBlock
             if (block == null || block.isPassable) return
-            e.player.tryPlacePuppet(item.asPuppet(e.player), block)
+            e.player.tryPlacePuppet(puppet, block)
             item.amount -= 1
         }
     }
