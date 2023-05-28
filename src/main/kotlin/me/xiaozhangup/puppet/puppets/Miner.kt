@@ -23,12 +23,13 @@ object Miner {
                     puppet.getUnderBlocks(puppet.level, -1.0).stream().filter { it.type.toString().endsWith("_ORE") }
                         .toList()
                 if (ores.isEmpty()) {
-                    puppet.display("&c范围内没有石头或矿物!".applyColor())
+                    puppet.display("&c范围内没有石头或矿物 :(".applyColor())
                     return
                 }
                 ores.random().type = Material.STONE
                 if (!puppet.addItem(ItemStack(Material.STONE, 64))) {
-                    puppet.display("&c人偶背包已满!".applyColor())
+                    puppet.display("&c人偶背包已满 :(".applyColor())
+                    puppet.setData("full", "true")
                 }
             }
         }

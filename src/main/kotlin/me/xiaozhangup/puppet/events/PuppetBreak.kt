@@ -22,6 +22,7 @@ object PuppetBreak {
                         return
                     }
                     puppet.asItemStack().dropAt(puppet.getLocation())
+                    puppet.dropAll()
                     puppet.remove()
                 }
             }

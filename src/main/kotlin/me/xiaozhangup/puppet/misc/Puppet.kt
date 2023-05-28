@@ -5,6 +5,7 @@ import ink.ptms.adyeshach.core.entity.type.AdyArmorStand
 import me.xiaozhangup.puppet.VillagerPuppet.gson
 import me.xiaozhangup.puppet.VillagerPuppet.manager
 import me.xiaozhangup.puppet.VillagerPuppet.puppets
+import me.xiaozhangup.puppet.events.event.PuppetWorkEvent
 import me.xiaozhangup.puppet.loader.PuppetData.add
 import me.xiaozhangup.puppet.loader.PuppetData.delete
 import me.xiaozhangup.puppet.utils.PEntity.dropAt
@@ -180,10 +181,11 @@ data class Puppet(
     }
 
     fun addItem(itemStack: ItemStack): Boolean {
+        if (!getData("full").isNullOrEmpty()) return false //如果满了直接返回
+
         val inv = getInventory()
         inv.addItem(itemStack)
         setInventory(inv)
-
         return (inv.getItem(getInventorySlots()) == null)
         //添加成功时，返回true，失败则返回false
     }
@@ -192,6 +194,7 @@ data class Puppet(
         val loc = getLocation()
         items.forEach { it.toItemStack().dropAt(loc) }
         items.clear()
+        removeData("full")
         display("")
     }
 
@@ -201,6 +204,13 @@ data class Puppet(
             return list.contains(this)
         }
         return false
+    }
+
+    fun workNow() {
+        val entity = manager.getEntityById("puppet-$uuid").firstOrNull() as AdyArmorStand
+        PuppetWorkEvent(this, type, entity).apply {
+            call()
+        }
     }
 
 }

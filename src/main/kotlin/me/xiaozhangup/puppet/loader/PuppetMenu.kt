@@ -151,7 +151,11 @@ object PuppetMenu {
                         }
                     }
                 }
-                puppet.level = level
+                if (puppet.level != level) {
+                    puppet.level = level
+                    puppet.removeData("full")
+                    //puppet.workNow() 有概率被利用
+                }
             }
         }
     }

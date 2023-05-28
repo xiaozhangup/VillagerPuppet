@@ -15,6 +15,8 @@ import kotlin.random.Random
 
 object PActions {
 
+    val normal = EulerAngle(0.0, 0.0, 0.0)
+
     @Awake(LifeCycle.ENABLE)
     fun action() {
         submitAsync(period = 8) {
@@ -24,7 +26,11 @@ object PActions {
                     val entity =
                         manager.getEntityById("puppet-" + puppet.uuid.toString()).firstOrNull() as AdyArmorStand
                     if (entity.hasViewer()) {
-                        entity.setRotation(BukkitRotation.RIGHT_ARM, e)
+                        if (puppet.getData("full").isNullOrEmpty()) {
+                            entity.setRotation(BukkitRotation.RIGHT_ARM, e)
+                        } else {
+                            entity.setRotation(BukkitRotation.RIGHT_ARM, normal)
+                        }
                     }
                 }
             }
@@ -42,8 +48,10 @@ object PActions {
                     //多tick处理
                     submit(delay = Random.nextInt(1, 30).toLong()) {
                         if (entity.getLocation().chunk.isLoaded) {
-                            PuppetWorkEvent(puppet, puppet.type, entity).apply {
-                                call()
+                            if (puppet.getData("full").isNullOrEmpty()) {
+                                PuppetWorkEvent(puppet, puppet.type, entity).apply {
+                                    call()
+                                }
                             }
                         }
                     }
