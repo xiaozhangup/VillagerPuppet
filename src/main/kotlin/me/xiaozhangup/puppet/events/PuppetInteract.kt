@@ -1,13 +1,13 @@
 package me.xiaozhangup.puppet.events
 
 import ink.ptms.adyeshach.core.event.AdyeshachEntityInteractEvent
+import me.xiaozhangup.puppet.VillagerPuppet
 import me.xiaozhangup.puppet.VillagerPuppet.hasPerm
 import me.xiaozhangup.puppet.loader.PuppetData.asPuppet
 import me.xiaozhangup.puppet.loader.PuppetMenu.openControl
 import me.xiaozhangup.puppet.misc.Puppet
 import me.xiaozhangup.puppet.utils.PEntity.tryPlacePuppet
 import me.xiaozhangup.puppet.utils.PMessage.error
-import me.xiaozhangup.puppet.utils.PMessage.info
 import me.xiaozhangup.puppet.utils.PUtils.applyColor
 import me.xiaozhangup.puppet.utils.PUtils.asPuppet
 import me.xiaozhangup.puppet.utils.PUtils.getMetaString
@@ -50,8 +50,17 @@ object PuppetInteract {
 
             val block = e.clickedBlock
             if (block == null || block.isPassable) return
-            e.player.tryPlacePuppet(puppet, block)
-            item.amount -= 1
+
+            val loc = block.location.clone().add(0.5, 1.0, 0.5)
+            //防止重复放置代码
+            VillagerPuppet.finder.getNearestEntity(loc)?.let {
+                if (it.id.startsWith("puppet-") && it.getLocation().distance(loc) < 3) {
+                    e.player.error("这个位置附近已经有一个人偶了!")
+                } else {
+                    e.player.tryPlacePuppet(puppet, loc)
+                    item.amount -= 1
+                }
+            }
         }
     }
 

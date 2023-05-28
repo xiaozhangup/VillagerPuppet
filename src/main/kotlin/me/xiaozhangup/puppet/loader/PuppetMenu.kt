@@ -2,22 +2,18 @@ package me.xiaozhangup.puppet.loader
 
 import ink.ptms.adyeshach.core.entity.EntityInstance
 import ink.ptms.adyeshach.core.entity.type.AdyArmorStand
-import ink.ptms.adyeshach.core.util.toItem
 import me.xiaozhangup.puppet.misc.Puppet
 import me.xiaozhangup.puppet.utils.PEntity.dropAt
 import me.xiaozhangup.puppet.utils.PMessage.info
-import me.xiaozhangup.puppet.utils.PUtils.applyColor
 import me.xiaozhangup.puppet.utils.PUtils.toBase64
 import me.xiaozhangup.puppet.utils.PUtils.toItemStack
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import taboolib.common.platform.function.submitAsync
 import taboolib.module.ui.openMenu
 import taboolib.module.ui.type.Stored
 import taboolib.platform.util.ItemBuilder
 import taboolib.platform.util.buildItem
-import java.util.*
 
 object PuppetMenu {
 
@@ -47,7 +43,8 @@ object PuppetMenu {
         name = "&6容器槽 &7(也就是等级)"
         lore += "&7在这里放入&f运输矿车"
         lore += "&7人偶便会拥有更多空间"
-        skullTexture = ItemBuilder.SkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjg5Yjk4ZjA0YzMyMjdkMzdkMzE5YmJjZmZjNTFmNTJlNzhkOTZhMDViMTI4NTJkMWI0NjRiYjc0MDhhNzgxMCJ9fX0=")
+        skullTexture =
+            ItemBuilder.SkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjg5Yjk4ZjA0YzMyMjdkMzdkMzE5YmJjZmZjNTFmNTJlNzhkOTZhMDViMTI4NTJkMWI0NjRiYjc0MDhhNzgxMCJ9fX0=")
         colored()
     }
     private val item = buildItem(Material.PLAYER_HEAD) {
@@ -56,7 +53,8 @@ object PuppetMenu {
         lore += "&7人偶将停止手头的工作"
         lore += ""
         lore += "&e单击物品取出"
-        skullTexture = ItemBuilder.SkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjg5Yjk4ZjA0YzMyMjdkMzdkMzE5YmJjZmZjNTFmNTJlNzhkOTZhMDViMTI4NTJkMWI0NjRiYjc0MDhhNzgxMCJ9fX0=")
+        skullTexture =
+            ItemBuilder.SkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjg5Yjk4ZjA0YzMyMjdkMzdkMzE5YmJjZmZjNTFmNTJlNzhkOTZhMDViMTI4NTJkMWI0NjRiYjc0MDhhNzgxMCJ9fX0=")
         colored()
     }
     private val moveable = listOf(10, 19, 28, 37, 49, 50, 51, 52)

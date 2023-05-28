@@ -10,7 +10,6 @@ import org.bukkit.persistence.PersistentDataType
 import taboolib.platform.util.deserializeToItemStack
 import taboolib.platform.util.serializeToByteArray
 import java.util.*
-import kotlin.random.Random
 
 object PUtils {
 
@@ -58,8 +57,14 @@ object PUtils {
 
     fun ItemStack.asPuppet(player: Player): Puppet {
         val pdc = this.itemMeta!!.persistentDataContainer
-        val type = PuppetType.valueOf(pdc.getOrDefault(NamespacedKey(VillagerPuppet.plugin, "type"), PersistentDataType.STRING, "MINER"))
-        return Puppet (
+        val type = PuppetType.valueOf(
+            pdc.getOrDefault(
+                NamespacedKey(VillagerPuppet.plugin, "type"),
+                PersistentDataType.STRING,
+                "MINER"
+            )
+        )
+        return Puppet(
             UUID.randomUUID(),
             player.name,
             "",

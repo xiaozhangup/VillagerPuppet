@@ -36,7 +36,8 @@ object PActions {
         submitAsync(period = 60) {
             for (list in puppets.values) {
                 for (puppet in list) {
-                    val entity = manager.getEntityById("puppet-" + puppet.uuid.toString()).firstOrNull() as AdyArmorStand
+                    val entity =
+                        manager.getEntityById("puppet-" + puppet.uuid.toString()).firstOrNull() as AdyArmorStand
 
                     //多tick处理
                     submit(delay = Random.nextInt(1, 30).toLong()) {

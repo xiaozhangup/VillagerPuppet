@@ -2,7 +2,6 @@ package me.xiaozhangup.puppet.misc
 
 import ink.ptms.adyeshach.core.entity.EntityTypes
 import ink.ptms.adyeshach.core.entity.type.AdyArmorStand
-import me.xiaozhangup.puppet.VillagerPuppet
 import me.xiaozhangup.puppet.VillagerPuppet.gson
 import me.xiaozhangup.puppet.VillagerPuppet.manager
 import me.xiaozhangup.puppet.VillagerPuppet.puppets
@@ -20,7 +19,6 @@ import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.Inventory
-import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
 import taboolib.platform.util.ItemBuilder
 import taboolib.platform.util.buildItem

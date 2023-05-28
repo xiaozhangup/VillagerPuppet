@@ -7,8 +7,6 @@ import me.xiaozhangup.puppet.utils.PUtils.applyColor
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.event.SubscribeEvent
-import taboolib.common.util.asList
-import kotlin.random.Random
 
 object Miner {
 
@@ -21,7 +19,9 @@ object Miner {
             if (stones.isNotEmpty()) {
                 stones.random().type = Material.COAL_ORE
             } else {
-                val ores = puppet.getUnderBlocks(puppet.level, -1.0).stream().filter { it.type.toString().endsWith("_ORE") }.toList()
+                val ores =
+                    puppet.getUnderBlocks(puppet.level, -1.0).stream().filter { it.type.toString().endsWith("_ORE") }
+                        .toList()
                 if (ores.isEmpty()) {
                     puppet.display("&c范围内没有石头或矿物!".applyColor())
                     return
