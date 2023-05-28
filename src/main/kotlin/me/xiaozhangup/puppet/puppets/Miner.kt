@@ -7,8 +7,20 @@ import me.xiaozhangup.puppet.utils.PUtils.applyColor
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.event.SubscribeEvent
+import kotlin.random.Random
 
 object Miner {
+
+    private val ores = arrayOf(
+        Pair(Material.COAL_ORE, 10),
+        Pair(Material.IRON_ORE, 5),
+        Pair(Material.GOLD_ORE, 2),
+        Pair(Material.REDSTONE_ORE, 5),
+        Pair(Material.LAPIS_ORE, 3),
+        Pair(Material.DIAMOND_ORE, 1),
+        Pair(Material.EMERALD_ORE, 1)
+    )
+    private val pickaxe = ItemStack(Material.DIAMOND_PICKAXE)
 
     @SubscribeEvent
     fun e(e: PuppetWorkEvent) {
@@ -17,7 +29,7 @@ object Miner {
             if (!puppet.getData("opened").isNullOrEmpty()) return
             val stones = puppet.getUnderBlocks(puppet.level, -1.0, Material.STONE)
             if (stones.isNotEmpty()) {
-                stones.random().type = Material.COAL_ORE
+                stones.random().type = getRandomOre(puppet.level)
             } else {
                 val ores =
                     puppet.getUnderBlocks(puppet.level, -1.0).stream().filter { it.type.toString().endsWith("_ORE") }
@@ -25,14 +37,39 @@ object Miner {
                 if (ores.isEmpty()) {
                     puppet.display("&c范围内没有石头或矿物 :(".applyColor())
                     return
-                }
-                ores.random().type = Material.STONE
-                if (!puppet.addItem(ItemStack(Material.STONE, 64))) {
-                    puppet.display("&c人偶背包已满 :(".applyColor())
-                    puppet.setData("full", "true")
+                } else {
+                    val block = ores.random()
+                    for (drop in block.getDrops(pickaxe)) {
+                        if (!puppet.addItem(drop)) {
+                            puppet.display("&c人偶背包已满 :(".applyColor())
+                            puppet.setData("full", "true")
+                            break
+                        } else {
+                            puppet.display("")
+                        }
+                    }
+                    block.type = Material.STONE
                 }
             }
         }
+    }
+
+    private fun getRandomOre(level: Int): Material {
+
+        val ableores = ores.take(ores.size - (5 - level))
+
+        var totalWeight = 0
+        for (ore in ableores) {
+            totalWeight += ore.second
+        }
+        var randomWeight = Random.nextInt(totalWeight)
+        for (ore in ableores) {
+            randomWeight -= ore.second
+            if (randomWeight < 0) {
+                return ore.first
+            }
+        }
+        return Material.STONE // fallback option
     }
 
 }

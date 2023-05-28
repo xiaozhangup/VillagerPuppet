@@ -15,12 +15,12 @@ import kotlin.random.Random
 
 object PActions {
 
-    val normal = EulerAngle(0.0, 0.0, 0.0)
+    val normal = EulerAngle(0.0, 0.0, 10.0)
 
     @Awake(LifeCycle.ENABLE)
     fun action() {
         submitAsync(period = 8) {
-            val e = EulerAngle(24 * sin(System.currentTimeMillis() / 300.0) - 16, 0.0, 0.0)
+            val e = EulerAngle(24 * sin(System.currentTimeMillis() / 300.0) - 16, 0.0, 10.0)
             for (list in puppets.values) {
                 for (puppet in list) {
                     val entity =

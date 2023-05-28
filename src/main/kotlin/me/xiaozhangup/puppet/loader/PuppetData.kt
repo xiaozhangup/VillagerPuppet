@@ -10,8 +10,10 @@ import org.bukkit.World
 import org.bukkit.event.world.WorldLoadEvent
 import org.bukkit.event.world.WorldUnloadEvent
 import taboolib.common.platform.event.SubscribeEvent
+import taboolib.common.platform.function.submit
 import taboolib.common.platform.function.submitAsync
 import java.io.File
+import kotlin.random.Random
 
 object PuppetData {
 
@@ -49,7 +51,13 @@ object PuppetData {
             dataPath.listFiles()?.let { files ->
                 for (file in files) {
                     try {
-                        file.readText().asPuppet().spawn()
+                        val puppet = file.readText().asPuppet()
+                        puppet.spawn()
+
+                        //执行一次
+                        submit(delay = Random.nextInt(1, 30).toLong()) {
+                            puppet.workNow()
+                        }
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
