@@ -5,6 +5,7 @@ import ink.ptms.adyeshach.core.entity.type.AdyArmorStand
 import ink.ptms.adyeshach.core.util.toItem
 import me.xiaozhangup.puppet.misc.Puppet
 import me.xiaozhangup.puppet.utils.PEntity.dropAt
+import me.xiaozhangup.puppet.utils.PMessage.info
 import me.xiaozhangup.puppet.utils.PUtils.applyColor
 import me.xiaozhangup.puppet.utils.PUtils.toBase64
 import me.xiaozhangup.puppet.utils.PUtils.toItemStack
@@ -101,6 +102,7 @@ object PuppetMenu {
                 set(stores[i], item.toItemStack()) {
                     if (puppet.isLive()) {
                         player.closeInventory()
+                        player.info("物品已洒落到地上!")
                         puppet.dropAll()
                     }
                 }

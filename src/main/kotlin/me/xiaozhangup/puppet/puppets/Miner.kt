@@ -29,8 +29,6 @@ object Miner {
                 ores.random().type = Material.STONE
                 if (!puppet.addItem(ItemStack(Material.STONE, 64))) {
                     puppet.display("&c人偶背包已满!".applyColor())
-                } else {
-                    puppet.display("")
                 }
             }
         }

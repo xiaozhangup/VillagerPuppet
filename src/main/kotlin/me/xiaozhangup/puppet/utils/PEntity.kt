@@ -2,6 +2,7 @@ package me.xiaozhangup.puppet.utils
 
 import me.xiaozhangup.puppet.VillagerPuppet
 import me.xiaozhangup.puppet.misc.Puppet
+import me.xiaozhangup.puppet.utils.PMessage.error
 import me.xiaozhangup.puppet.utils.PUtils.toRawString
 import org.bukkit.Location
 import org.bukkit.block.Block
@@ -19,8 +20,8 @@ object PEntity {
 
         //防止重复放置代码
         VillagerPuppet.finder.getNearestEntity(loc)?.let {
-            if (it.id.startsWith("puppet-") && it.getLocation().distance(loc) < 1) {
-                this.sendMessage("请勿重复放置") // TODO: 消息提示轮子
+            if (it.id.startsWith("puppet-") && it.getLocation().distance(loc) < 3) {
+                this.error("这个位置附近已经有一个人偶了!")
                 return
             }
         }

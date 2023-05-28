@@ -6,6 +6,8 @@ import me.xiaozhangup.puppet.loader.PuppetData.asPuppet
 import me.xiaozhangup.puppet.loader.PuppetMenu.openControl
 import me.xiaozhangup.puppet.misc.Puppet
 import me.xiaozhangup.puppet.utils.PEntity.tryPlacePuppet
+import me.xiaozhangup.puppet.utils.PMessage.error
+import me.xiaozhangup.puppet.utils.PMessage.info
 import me.xiaozhangup.puppet.utils.PUtils.applyColor
 import me.xiaozhangup.puppet.utils.PUtils.asPuppet
 import me.xiaozhangup.puppet.utils.PUtils.getMetaString
@@ -61,8 +63,11 @@ object PuppetInteract {
                 id.asPuppet(e.entity.world)?.let { puppet: Puppet ->
                     val player = e.player
                     if (puppet.owner == player.name || player.hasPerm(puppet.getLocation())) {
-                        if (!puppet.getData("opened").isNullOrEmpty()) return
-                        // TODO: 无法交互的提示
+                        val data = puppet.getData("opened")
+                        if (!data.isNullOrEmpty()) {
+                            e.player.error("这个人偶正在被 $data 操作,无法交互!")
+                            return
+                        }
                         puppet.openControl(player, e.entity)
                         player.playSound(player.location, Sound.BLOCK_ANVIL_BREAK, 1f, 1f)
                     }

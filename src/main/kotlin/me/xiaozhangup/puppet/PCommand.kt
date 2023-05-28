@@ -2,6 +2,7 @@ package me.xiaozhangup.puppet
 
 import me.xiaozhangup.puppet.misc.PuppetType
 import me.xiaozhangup.puppet.misc.asItemStack
+import me.xiaozhangup.puppet.utils.PMessage.info
 import org.bukkit.entity.Player
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
@@ -15,11 +16,13 @@ object PCommand {
     fun reg() {
         command("puppet", permissionDefault = PermissionDefault.OP) {
             dynamic(optional = true) {
-                suggestion<Player> { player, _ ->
+                suggestion<Player> { _, _ ->
                     PuppetType.values().map { it.toString() }
                 }
                 execute<Player> { player, _, argument ->
-                    player.giveItem(PuppetType.valueOf(argument).asItemStack())
+                    val type = PuppetType.valueOf(argument)
+                    player.giveItem(type.asItemStack())
+                    player.info("你得到了一个 ${type.cn}人偶!")
                 }
             }
         }
