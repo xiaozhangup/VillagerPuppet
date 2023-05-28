@@ -30,7 +30,7 @@ object PuppetInteract {
             if (e.action != Action.RIGHT_CLICK_BLOCK) {
                 if (e.action == Action.LEFT_CLICK_AIR) {
                     e.player.openBook(buildBook {
-                        title = "精灵文档"
+                        title = "人偶文档"
                         author = "VillagerPuppet"
 
                         write(
@@ -61,6 +61,8 @@ object PuppetInteract {
                 id.asPuppet(e.entity.world)?.let { puppet: Puppet ->
                     val player = e.player
                     if (puppet.owner == player.name || player.hasPerm(puppet.getLocation())) {
+                        if (!puppet.getData("opened").isNullOrEmpty()) return
+                        // TODO: 无法交互的提示
                         puppet.openControl(player, e.entity)
                         player.playSound(player.location, Sound.BLOCK_ANVIL_BREAK, 1f, 1f)
                     }

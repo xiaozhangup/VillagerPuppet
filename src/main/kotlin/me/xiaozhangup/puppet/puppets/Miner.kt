@@ -5,6 +5,7 @@ import me.xiaozhangup.puppet.misc.PuppetType
 import me.xiaozhangup.puppet.utils.PCheck.getUnderBlocks
 import me.xiaozhangup.puppet.utils.PUtils.applyColor
 import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.util.asList
 import kotlin.random.Random
@@ -15,6 +16,7 @@ object Miner {
     fun e(e: PuppetWorkEvent) {
         if (e.type == PuppetType.MINER) {
             val puppet = e.puppet
+            if (!puppet.getData("opened").isNullOrEmpty()) return
             val stones = puppet.getUnderBlocks(puppet.level, -1.0, Material.STONE)
             if (stones.isNotEmpty()) {
                 stones.random().type = Material.COAL_ORE
@@ -25,6 +27,11 @@ object Miner {
                     return
                 }
                 ores.random().type = Material.STONE
+                if (!puppet.addItem(ItemStack(Material.STONE, 64))) {
+                    puppet.display("&c人偶背包已满!".applyColor())
+                } else {
+                    puppet.display("")
+                }
             }
         }
     }

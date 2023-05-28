@@ -2,18 +2,25 @@ package me.xiaozhangup.puppet.misc
 
 import ink.ptms.adyeshach.core.entity.EntityTypes
 import ink.ptms.adyeshach.core.entity.type.AdyArmorStand
+import me.xiaozhangup.puppet.VillagerPuppet
 import me.xiaozhangup.puppet.VillagerPuppet.gson
 import me.xiaozhangup.puppet.VillagerPuppet.manager
+import me.xiaozhangup.puppet.VillagerPuppet.puppets
 import me.xiaozhangup.puppet.loader.PuppetData.add
 import me.xiaozhangup.puppet.loader.PuppetData.delete
+import me.xiaozhangup.puppet.utils.PEntity.dropAt
 import me.xiaozhangup.puppet.utils.PUtils.setMetaInt
 import me.xiaozhangup.puppet.utils.PUtils.setMetaString
 import me.xiaozhangup.puppet.utils.PUtils.toBase64
 import me.xiaozhangup.puppet.utils.PUtils.toItemStack
 import me.xiaozhangup.puppet.utils.PUtils.toLocation
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.EquipmentSlot
+import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
 import taboolib.platform.util.ItemBuilder
 import taboolib.platform.util.buildItem
@@ -63,17 +70,17 @@ data class Puppet(
         return type.hand
     }
 
-    fun getItemsStore(): List<ItemStack> {
-        return items.map { it.toItemStack() }.asReversed()
-    }
-
-    fun addItem(itemStack: ItemStack) {
-        items.add(itemStack.toBase64())
-    }
-
-    fun removeItem(itemStack: ItemStack): Boolean {
-        return items.remove(itemStack.toBase64())
-    }
+//    fun getItemsStore(): List<ItemStack> {
+//        return items.map { it.toItemStack() }.asReversed()
+//    }
+//
+//    fun addItem(itemStack: ItemStack) {
+//        items.add(itemStack.toBase64())
+//    }
+//
+//    fun removeItem(itemStack: ItemStack): Boolean {
+//        return items.remove(itemStack.toBase64())
+//    }
 
     fun setData(key: String, value: String) {
         data[key] = value
@@ -113,12 +120,13 @@ data class Puppet(
 
     fun display(string: String) {
         manager.getEntityById("puppet-" + this.uuid.toString()).forEach {
+            if (it.getCustomName() == string) return
             it.setCustomName(string)
             it.setCustomNameVisible(string.isNotEmpty())
         }
     }
 
-    fun despawn() { //让某个精灵消失
+    fun despawn() { //让某个人偶消失
         manager.getEntityById("puppet-" + this.uuid.toString()).forEach { it.remove() }
     }
 
@@ -150,6 +158,51 @@ data class Puppet(
 
     fun asJson(): String {
         return gson.toJson(this)
+    }
+
+    //Inventory
+    fun getInventorySlots(): Int {
+        return level * 3
+    }
+
+    fun getInventory(): Inventory {
+        val inventory = Bukkit.createInventory(null, InventoryType.CHEST)
+        for (i in items) {
+            inventory.addItem(i.toItemStack())
+        }
+
+        return inventory
+    }
+
+    fun setInventory(inventory: Inventory) {
+        items.clear()
+        for (s in 0 until getInventorySlots()) {
+            inventory.getItem(s)?.let { items.add(it.toBase64()) }
+        }
+    }
+
+    fun addItem(itemStack: ItemStack): Boolean {
+        val inv = getInventory()
+        inv.addItem(itemStack)
+        setInventory(inv)
+
+        return (inv.getItem(getInventorySlots()) == null)
+        //添加成功时，返回true，失败则返回false
+    }
+
+    fun dropAll() {
+        val loc = getLocation()
+        items.forEach { it.toItemStack().dropAt(loc) }
+        items.clear()
+        display("")
+    }
+
+    fun isLive(): Boolean {
+        val list = puppets[getLocation().world]
+        if (list != null) {
+            return list.contains(this)
+        }
+        return false
     }
 
 }

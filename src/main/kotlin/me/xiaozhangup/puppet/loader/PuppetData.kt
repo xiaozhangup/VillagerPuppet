@@ -72,6 +72,7 @@ object PuppetData {
             ps?.forEach { puppet ->
                 val pc = File(dataPath, puppet.uuid.toString())
                 pc.createNewFile()
+                puppet.removeData("opened")
                 pc.writeText(puppet.asJson())
             }
         }

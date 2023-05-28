@@ -45,12 +45,15 @@ object PuppetMenu {
     private val echest = buildItem(Material.PLAYER_HEAD) {
         name = "&6容器槽 &7(也就是等级)"
         lore += "&7在这里放入&f运输矿车"
-        lore += "&7精灵便会拥有更多空间"
+        lore += "&7人偶便会拥有更多空间"
         skullTexture = ItemBuilder.SkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjg5Yjk4ZjA0YzMyMjdkMzdkMzE5YmJjZmZjNTFmNTJlNzhkOTZhMDViMTI4NTJkMWI0NjRiYjc0MDhhNzgxMCJ9fX0=")
         colored()
     }
     private val item = buildItem(Material.PLAYER_HEAD) {
         name = "&f物品槽"
+        lore += "&7在本菜单被开启时"
+        lore += "&7人偶将停止手头的工作"
+        lore += ""
         lore += "&e单击物品取出"
         skullTexture = ItemBuilder.SkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjg5Yjk4ZjA0YzMyMjdkMzdkMzE5YmJjZmZjNTFmNTJlNzhkOTZhMDViMTI4NTJkMWI0NjRiYjc0MDhhNzgxMCJ9fX0=")
         colored()
@@ -60,7 +63,8 @@ object PuppetMenu {
 
     fun Puppet.openControl(player: Player, entity: EntityInstance) {
         val puppet = this
-        player.openMenu<Stored>(title = "${puppet.type.cn}精灵操作页 (等级 ${puppet.level})") {
+        puppet.setData("opened", player.name)
+        player.openMenu<Stored>(title = "${puppet.type.cn}人偶操作页 (等级 ${puppet.level})") {
             rows(6)
 
             handLocked(false)
@@ -92,16 +96,19 @@ object PuppetMenu {
                 set(level + 47, ItemStack(Material.CHEST_MINECART))
             }
 
+            //放入内部物品
+            for ((i, item) in puppet.items.withIndex()) {
+                set(stores[i], item.toItemStack()) {
+                    if (puppet.isLive()) {
+                        player.closeInventory()
+                        puppet.dropAll()
+                    }
+                }
+            }
+
             //填入可用物品栏
             for (slot in 0..(-1 + puppet.level * 3)) {
                 set(stores[slot], ItemStack(Material.AIR))
-            }
-
-            //放入内部物品
-            var i = 0
-            for (item in puppet.items) {
-                set(stores[i], item.toItemStack())
-                i++
             }
 
             onClick { event ->
@@ -112,6 +119,7 @@ object PuppetMenu {
             }
 
             onClose { event ->
+                puppet.removeData("opened")
                 val inv = event.inventory
 
                 entity as AdyArmorStand

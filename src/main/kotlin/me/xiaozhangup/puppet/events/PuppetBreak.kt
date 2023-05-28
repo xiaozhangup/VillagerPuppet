@@ -15,6 +15,8 @@ object PuppetBreak {
             val id = e.entity.id.replaceFirst("puppet-", "")
             id.asPuppet(e.entity.world)?.let { puppet: Puppet ->
                 if (puppet.owner == e.player.name || e.player.hasPerm(puppet.getLocation())) {
+                    if (!puppet.getData("opened").isNullOrEmpty()) return
+                    // TODO: 被打开无法拆除的提示
                     puppet.asItemStack().dropAt(puppet.getLocation())
                     puppet.remove()
                 }
