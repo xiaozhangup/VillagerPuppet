@@ -6,6 +6,7 @@ import me.xiaozhangup.puppet.utils.PMessage.info
 import org.bukkit.entity.Player
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
+import taboolib.common.platform.command.CommandContext
 import taboolib.common.platform.command.PermissionDefault
 import taboolib.common.platform.command.command
 import taboolib.platform.util.giveItem
@@ -23,6 +24,14 @@ object PCommand {
                     val type = PuppetType.valueOf(argument)
                     player.giveItem(type.asItemStack())
                     player.info("你得到了一个 ${type.cn}人偶!")
+                }
+            }
+        }
+
+        command("puppetall", permissionDefault = PermissionDefault.OP) {
+            execute<Player> { sender, _, _ ->
+                for (type in PuppetType.values()) {
+                    sender.giveItem(type.asItemStack())
                 }
             }
         }

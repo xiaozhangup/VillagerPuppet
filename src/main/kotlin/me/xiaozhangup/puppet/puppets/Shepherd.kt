@@ -26,7 +26,7 @@ object Shepherd {
             if (!puppet.getData("opened").isNullOrEmpty()) return
 
             val level = puppet.level.toDouble()
-            val sheep = puppet.getLocation().getNearbyEntities(level, level, level).stream().filter { it.type == EntityType.SHEEP }
+            val sheep = puppet.getLocation().getNearbyEntities(level, 1.0, level).stream().filter { it.type == EntityType.SHEEP }
                 .toList()
 
             if (sheep.isEmpty()) {
@@ -57,7 +57,7 @@ object Shepherd {
     @Awake(LifeCycle.ENABLE)
     fun cacheDye() {
         for (dyeColor in DyeColor.values()) {
-            dyes.put(dyeColor, Material.valueOf("${dyeColor}_WOOL"))
+            dyes[dyeColor] = Material.valueOf("${dyeColor}_WOOL")
         }
     }
 

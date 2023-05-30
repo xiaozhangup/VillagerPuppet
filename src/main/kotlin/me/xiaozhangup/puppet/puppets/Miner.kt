@@ -27,12 +27,14 @@ object Miner {
         if (e.type == PuppetType.MINER) {
             val puppet = e.puppet
             if (!puppet.getData("opened").isNullOrEmpty()) return
-            val stones = puppet.getUnderBlocks(puppet.level, -1.0, Material.STONE)
+            val blocks = puppet.getUnderBlocks(puppet.level, -1.0)
+            val stones = blocks.stream().filter { it.type == Material.STONE }
+                .toList()
             if (stones.isNotEmpty()) {
                 stones.random().type = getRandomOre(puppet.level)
             } else {
                 val ores =
-                    puppet.getUnderBlocks(puppet.level, -1.0).stream().filter { it.type.toString().endsWith("_ORE") }
+                    blocks.stream().filter { it.type.toString().endsWith("_ORE") }
                         .toList()
                 if (ores.isEmpty()) {
                     puppet.display("&c范围内没有石头或矿物 :(".applyColor())
@@ -46,9 +48,9 @@ object Miner {
                             break
                         } else {
                             puppet.display("")
+                            block.type = Material.STONE
                         }
                     }
-                    block.type = Material.STONE
                 }
             }
         }

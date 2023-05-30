@@ -8,43 +8,37 @@ import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.event.SubscribeEvent
 
-object IceMaker {
-
-    val ice = listOf(Material.ICE, Material.PACKED_ICE, Material.BLUE_ICE)
+object Lavar {
 
     @SubscribeEvent
     fun e(e: PuppetWorkEvent) {
-        if (e.type == PuppetType.ICE_MAKER) {
+        if (e.type == PuppetType.LAVA) {
             val puppet = e.puppet
             if (!puppet.getData("opened").isNullOrEmpty()) return
             val blocks = puppet.getUnderBlocks(2, -1.0)
 
-            val waters = blocks.stream().filter { it.type == Material.WATER }
+            val lavas = blocks.stream().filter { it.type == Material.LAVA }
                 .toList()
-            if (waters.isNotEmpty()) {
-                waters.random().type = getRandomIce(puppet.level)
+            if (lavas.isNotEmpty()) {
+                lavas.random().type = Material.OBSIDIAN
             } else {
-                val ices = blocks.stream().filter { it.type.toString().endsWith("_ICE") || it.type == Material.ICE }
+                val obsidian = blocks.stream().filter { it.type == Material.OBSIDIAN }
                     .toList()
-                if (ices.isNotEmpty()) {
-                    val block = ices.random()
-                    if (!puppet.addItem(ItemStack(block.type))) {
+                if (obsidian.isNotEmpty()) {
+                    val block = obsidian.random()
+                    if (!puppet.addItem(ItemStack(Material.OBSIDIAN))) {
                         puppet.display("&c人偶背包已满 :(".applyColor())
                         puppet.setData("full", "true")
                     } else {
                         puppet.display("")
-                        block.type = Material.WATER
+                        block.type = Material.AIR
                     }
                 } else {
-                    puppet.display("&c范围内没有水或冰 :(".applyColor())
+                    puppet.display("&c范围内没有岩浆或黑耀石 :(".applyColor())
                     return
                 }
             }
         }
-    }
-
-    private fun getRandomIce(level: Int): Material {
-        return ice.take(level).random()
     }
 
 }

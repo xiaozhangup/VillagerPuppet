@@ -14,20 +14,27 @@ enum class PuppetType(val cn: String, val skull: String, val hand: ItemStack, va
         "生成并挖掘矿物",
         "在脚下半径为N的石头上生成矿物方块或挖掘矿物,类型随等级提高而增多 (N为人偶等级)."
     ),
-    BREAKER( // TODO:
-        "挖工",
-        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzQ3YjIyMjJlZDZmZTFkNDMxM2MzY2IzNDJiYTk2YTU1YTg5Yjc2ZTYyZDZiYTdhMTU4Y2QzZGU5NDNkZTNlZSJ9fX0=",
-        buildItem(Material.GOLDEN_PICKAXE),
-        "挖掘面前的方块",
-        "挖掘面前N格的方块 (N为精灵等级)."
-    ),
-    FARMER( // TODO:
-        "农夫",
-        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDAxZTAzNWEzZDhkNjEyNjA3MmJjYmU1MmE5NzkxM2FjZTkzNTUyYTk5OTk1YjVkNDA3MGQ2NzgzYTMxZTkwOSJ9fX0=",
-        buildItem(Material.STONE_HOE),
-        "种植和收割附近的作物",
-        "种植和收割附近N格内的成熟作物 (N为人偶等级)."
-    ),
+//    BREAKER( // TODO:
+//        "挖工",
+//        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzQ3YjIyMjJlZDZmZTFkNDMxM2MzY2IzNDJiYTk2YTU1YTg5Yjc2ZTYyZDZiYTdhMTU4Y2QzZGU5NDNkZTNlZSJ9fX0=",
+//        buildItem(Material.GOLDEN_PICKAXE),
+//        "挖掘周围的方块",
+//        "挖掘周围N格的方块 (和精灵同高度,N为精灵等级)."
+//    ),
+//    FARMER( // TODO:
+//        "农夫",
+//        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDAxZTAzNWEzZDhkNjEyNjA3MmJjYmU1MmE5NzkxM2FjZTkzNTUyYTk5OTk1YjVkNDA3MGQ2NzgzYTMxZTkwOSJ9fX0=",
+//        buildItem(Material.STONE_HOE),
+//        "种植和收割附近的作物",
+//        "种植和收割附近N格内的成熟作物 (N为人偶等级)."
+//    ),
+//    MASON( // TODO:
+//        "石匠",
+//        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDE0YmZmMWEzOGM5MTU0ZTVlYzg0Y2U1Y2YwMGM1ODc2OGUwNjhlYjQyYjJkODlhNmJiZDI5Nzg3NTkwMTA2YiJ9fX0=",
+//        buildItem(Material.STONE),
+//        "凭空产出石头",
+//        "将脚下5格范围内的空气替换为石头."
+//    ),
     SHEPHERD(
         "羊毛工",
         "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTE5NTUxNjhlZjUzZjcxMjBjMDg5ZGFmZTNlNmU0MzdlOTUyNDA1NTVkOGMzYWNjZjk0NGQ2YzU2Yjc0MDQ3NSJ9fX0=",
@@ -35,12 +42,12 @@ enum class PuppetType(val cn: String, val skull: String, val hand: ItemStack, va
         "裁剪附近的绵羊羊毛",
         "裁剪附近N格内的绵羊羊毛 (N为人偶等级)."
     ),
-    FISHER( // TODO:
+    FISHER(
         "渔夫",
         "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzlhOWViZGQyYzFiZjJkMGE2MWMzYjk4YzBiYzQyNzc0NDRhMWI4ZmVkYmIxNmNjYTRmYWFjYTlmN2VjMDU5MiJ9fX0=",
         buildItem(Material.FISHING_ROD),
         "从附近的水源钓鱼",
-        ""
+        "附近3格子内必须有6格以上水源方块,才可开始钓鱼."
     ),
     ICE_MAKER(
         "冰工",
@@ -48,6 +55,34 @@ enum class PuppetType(val cn: String, val skull: String, val hand: ItemStack, va
         buildItem(Material.ICE),
         "冻结水源并收集冰块",
         "将脚下半径为2范围内的水变成各种冰块,并在全部变为冰块后挖掘冰块并收集 (种类和人偶等级相关)."
+    ),
+    LAVA(
+        "岩浆工",
+        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGFkNWIzZWIzZDc4N2ZjMGFkZjBmNzkwMzdkMmI3MWVjYmRkMDQyZTEzODFkZjc5YTIyZDYyYmI5N2MwZDE4In19fQ==",
+        buildItem(Material.OBSIDIAN),
+        "将流动岩浆转换为黑耀石",
+        "将脚下半径为2范围内的岩浆变为黑耀石,并在全部变为黑耀石后挖掘并收集."
+    ),
+    FLETCHER(
+        "园丁",
+        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWQxYzFiYzYzYTJkNTljOTNkMDdlZDFhYjZkYWU3YmRkNGMyZTlmMWE3N2IxNmRjN2ZiMTA2YzM1NDViNmU0NyJ9fX0=",
+        buildItem(Material.WHITE_TULIP),
+        "在附近种植郁金香",
+        "在附近N格内的草方块上生成各色郁金香 (N为人偶等级)."
+    ),
+    HUNTER(
+        "猎人",
+        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDY1ZjNmOTc5NzgxZmRhNDljZDI0NTNlMGJiMTdhMjMwODY5NTA2NGNhYjdmZjkyNzkwNzkwNTc3NTI2MWUzYSJ9fX0=",
+        buildItem(Material.NETHERITE_SWORD),
+        "攻击周围的怪物",
+        "攻击附近N格内的同高度怪物 (N为人偶等级,伤害为等级*4)."
+    ),
+    PICKER(
+        "拾荒者",
+        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWZjNmFjOWQ4NTU1NGJiZTU2YTY2NjhkZTBhNTRjYjFlZmY5M2UxNGY0YmNkZjcyNDVhNzQ0Y2MzNzcyMWYwYSJ9fX0=",
+        buildItem(Material.HOPPER),
+        "拾取地上的物品",
+        "拾取同高度N格内的掉落物并收集 (N为人偶等级)."
     )
     //可能有更多,目前就这几个足够
 }
