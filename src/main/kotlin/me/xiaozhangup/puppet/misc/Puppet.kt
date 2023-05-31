@@ -185,8 +185,28 @@ data class Puppet(
 
         val inv = getInventory()
         inv.addItem(itemStack)
+
+        if (inv.getItem(getInventorySlots()) != null) {
+            return false
+        }
         setInventory(inv)
-        return (inv.getItem(getInventorySlots()) == null)
+        return true
+        //添加成功时，返回true，失败则返回false
+    }
+
+    fun addItem(itemStack: List<ItemStack>): Boolean {
+        if (!getData("full").isNullOrEmpty()) return false //如果满了直接返回
+
+        val inv = getInventory()
+        for (item in itemStack) {
+            inv.addItem(item)
+        }
+
+        if (inv.getItem(getInventorySlots()) != null) {
+            return false
+        }
+        setInventory(inv)
+        return true
         //添加成功时，返回true，失败则返回false
     }
 

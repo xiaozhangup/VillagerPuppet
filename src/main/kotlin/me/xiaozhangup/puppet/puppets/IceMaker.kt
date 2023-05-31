@@ -19,8 +19,7 @@ object IceMaker {
             if (!puppet.getData("opened").isNullOrEmpty()) return
             val blocks = puppet.getUnderBlocks(2, -1.0)
 
-            val waters = blocks.stream().filter { it.type == Material.WATER }
-                .toList()
+            val waters = blocks.filter { it.type == Material.WATER }
             if (waters.isNotEmpty()) {
                 waters.random().type = getRandomIce(puppet.level)
             } else {

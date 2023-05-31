@@ -28,14 +28,12 @@ object Miner {
             val puppet = e.puppet
             if (!puppet.getData("opened").isNullOrEmpty()) return
             val blocks = puppet.getUnderBlocks(puppet.level, -1.0)
-            val stones = blocks.stream().filter { it.type == Material.STONE }
-                .toList()
+            val stones = blocks.filter { it.type == Material.STONE }
             if (stones.isNotEmpty()) {
                 stones.random().type = getRandomOre(puppet.level)
             } else {
                 val ores =
-                    blocks.stream().filter { it.type.toString().endsWith("_ORE") }
-                        .toList()
+                    blocks.filter { it.type.toString().endsWith("_ORE") }
                 if (ores.isEmpty()) {
                     puppet.display("&c范围内没有石头或矿物 :(".applyColor())
                     return

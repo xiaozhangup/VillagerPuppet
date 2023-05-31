@@ -17,13 +17,11 @@ object Lavar {
             if (!puppet.getData("opened").isNullOrEmpty()) return
             val blocks = puppet.getUnderBlocks(2, -1.0)
 
-            val lavas = blocks.stream().filter { it.type == Material.LAVA }
-                .toList()
+            val lavas = blocks.filter { it.type == Material.LAVA }
             if (lavas.isNotEmpty()) {
                 lavas.random().type = Material.OBSIDIAN
             } else {
-                val obsidian = blocks.stream().filter { it.type == Material.OBSIDIAN }
-                    .toList()
+                val obsidian = blocks.filter { it.type == Material.OBSIDIAN }
                 if (obsidian.isNotEmpty()) {
                     val block = obsidian.random()
                     if (!puppet.addItem(ItemStack(Material.OBSIDIAN))) {

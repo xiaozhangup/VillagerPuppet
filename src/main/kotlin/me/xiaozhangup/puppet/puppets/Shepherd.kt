@@ -26,8 +26,7 @@ object Shepherd {
             if (!puppet.getData("opened").isNullOrEmpty()) return
 
             val level = puppet.level.toDouble()
-            val sheep = puppet.getLocation().getNearbyEntities(level, 1.0, level).stream().filter { it.type == EntityType.SHEEP }
-                .toList()
+            val sheep = puppet.getLocation().getNearbyEntities(level, 1.0, level).filter { it.type == EntityType.SHEEP }
 
             if (sheep.isEmpty()) {
                 puppet.display("&c范围内没有羊 :(".applyColor())

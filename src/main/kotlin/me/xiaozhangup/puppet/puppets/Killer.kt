@@ -7,6 +7,7 @@ import me.xiaozhangup.puppet.utils.PUtils.applyColor
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Particle
+import org.bukkit.entity.Animals
 import org.bukkit.entity.Creeper
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Monster
@@ -14,18 +15,20 @@ import org.bukkit.entity.Sheep
 import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.event.SubscribeEvent
 
-object Hunter {
+object Killer {
 
     @SubscribeEvent
     fun e(e: PuppetWorkEvent) {
-        if (e.type == PuppetType.HUNTER) {
+        if (e.type == PuppetType.KILLER) {
             val puppet = e.puppet
             val level = puppet.level.toDouble()
-            val entity = puppet.getLocation().getNearbyEntities(level, 1.0, level).filter { it is Monster }
+            val entity = puppet.getLocation().getNearbyEntities(level, 1.0, level).filter { it is Monster || it is Animals }
 
             if (entity.isNotEmpty()) {
-                val monster = entity.random() as LivingEntity
-                monster.damage(level * 4)
+                for (mob in entity.take(16)) {
+                    mob as LivingEntity
+                    mob.damage(level * 2)
+                }
             }
         }
     }

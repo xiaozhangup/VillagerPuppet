@@ -14,27 +14,34 @@ enum class PuppetType(val cn: String, val skull: String, val hand: ItemStack, va
         "生成并挖掘矿物",
         "在脚下半径为N的石头上生成矿物方块或挖掘矿物,类型随等级提高而增多 (N为人偶等级)."
     ),
-//    BREAKER( // TODO:
-//        "挖工",
-//        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzQ3YjIyMjJlZDZmZTFkNDMxM2MzY2IzNDJiYTk2YTU1YTg5Yjc2ZTYyZDZiYTdhMTU4Y2QzZGU5NDNkZTNlZSJ9fX0=",
-//        buildItem(Material.GOLDEN_PICKAXE),
-//        "挖掘周围的方块",
-//        "挖掘周围N格的方块 (和精灵同高度,N为精灵等级)."
-//    ),
-//    FARMER( // TODO:
-//        "农夫",
-//        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDAxZTAzNWEzZDhkNjEyNjA3MmJjYmU1MmE5NzkxM2FjZTkzNTUyYTk5OTk1YjVkNDA3MGQ2NzgzYTMxZTkwOSJ9fX0=",
-//        buildItem(Material.STONE_HOE),
-//        "种植和收割附近的作物",
-//        "种植和收割附近N格内的成熟作物 (N为人偶等级)."
-//    ),
-//    MASON( // TODO:
-//        "石匠",
-//        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDE0YmZmMWEzOGM5MTU0ZTVlYzg0Y2U1Y2YwMGM1ODc2OGUwNjhlYjQyYjJkODlhNmJiZDI5Nzg3NTkwMTA2YiJ9fX0=",
-//        buildItem(Material.STONE),
-//        "凭空产出石头",
-//        "将脚下5格范围内的空气替换为石头."
-//    ),
+    BREAKER(
+        "挖工",
+        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzQ3YjIyMjJlZDZmZTFkNDMxM2MzY2IzNDJiYTk2YTU1YTg5Yjc2ZTYyZDZiYTdhMTU4Y2QzZGU5NDNkZTNlZSJ9fX0=",
+        buildItem(Material.GOLDEN_PICKAXE),
+        "挖掘面前的方块",
+        "挖掘面前N格的方块 (和精灵同高度,N为精灵等级)."
+    ),
+    FARMER(
+        "农夫",
+        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDAxZTAzNWEzZDhkNjEyNjA3MmJjYmU1MmE5NzkxM2FjZTkzNTUyYTk5OTk1YjVkNDA3MGQ2NzgzYTMxZTkwOSJ9fX0=",
+        buildItem(Material.STONE_HOE),
+        "种植和收割附近的作物",
+        "种植和收割附近N格内同高的成熟作物,例如小麦,可可豆,但不可收割西瓜和南瓜 (N为人偶等级)."
+    ),
+    MASON(
+        "石匠",
+        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTk3MTg0NjRkYWIwNDljMDY0OGE3MTYwYzZlMzRmMzc1MjIzN2NjMTlhMTljYzcyZDA0MDFiNTE3ZjZjMjQifX19",
+        buildItem(Material.COBBLESTONE),
+        "凭空产出石头",
+        "将脚下5*5范围内的空气替换为圆石,如果没有空气,则直接在背包内生成圆石."
+    ),
+    KILLER(
+        "杀手",
+        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjFhY2RmZGI2MjVkZWE4YTA0NGVmMDU0MjEwNjFjZDZkZGQ5ODY1ZTdjNjY1MTQ4OWFhZTU5ZDJiYzU2ZjAwOSJ9fX0=",
+        buildItem(Material.DIAMOND_SWORD),
+        "攻击周围的动物和怪物",
+        "攻击附近N格内的同高度的所有动物和怪物 (N为人偶等级,伤害为等级*2)."
+    ),
     SHEPHERD(
         "羊毛工",
         "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTE5NTUxNjhlZjUzZjcxMjBjMDg5ZGFmZTNlNmU0MzdlOTUyNDA1NTVkOGMzYWNjZjk0NGQ2YzU2Yjc0MDQ3NSJ9fX0=",
@@ -51,7 +58,7 @@ enum class PuppetType(val cn: String, val skull: String, val hand: ItemStack, va
     ),
     ICE_MAKER(
         "冰工",
-        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjJlNjlhNjVhOTVlZjNmZjRkMzc4YTBjODlkNzFhMmUyZDc5MDZiNDViYmU2NTQ4OGRiNmVhMTQzYzJjMDQzOCJ9fX0=",
+        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmZkNDUxOGRiMzVhYThhYTBjNTlkOTY4MzRkZWQ3OWI0NmM5OTFlODM0M2Q3MjZjMjAzMWYxYWM1NWZkNzc5ZSJ9fX0=",
         buildItem(Material.ICE),
         "冻结水源并收集冰块",
         "将脚下半径为2范围内的水变成各种冰块,并在全部变为冰块后挖掘冰块并收集 (种类和人偶等级相关)."
