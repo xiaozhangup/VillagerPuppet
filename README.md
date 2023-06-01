@@ -1,5 +1,6 @@
 # Building
 
+***此项目使用私有库作为依赖，无法直接完成构建！***  
 * [Gradle](https://gradle.org/) - Dependency Management
 
 The GradleWrapper in included in this project.
