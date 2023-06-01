@@ -25,7 +25,6 @@ taboolib {
 
         dependencies {
             name("Adyeshach")
-            name("SlimeCargo")
         }
     }
 }

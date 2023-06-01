@@ -23,6 +23,7 @@ object VillagerPuppet : Plugin() {
     val gson: Gson by lazy { Gson() }
     val manager by lazy { Adyeshach.api().getPublicEntityManager(ManagerType.TEMPORARY) }
     val finder by lazy { Adyeshach.api().getEntityFinder() }
+    val lobby by lazy { Bukkit.getServer().name == "lobby" }
 
     val puppets: ConcurrentHashMap<World, MutableList<Puppet>> = ConcurrentHashMap()
 
@@ -37,7 +38,8 @@ object VillagerPuppet : Plugin() {
     }
 
     fun Player.hasPerm(location: Location): Boolean {
-        return !PermCheck.quick(this, location, ActionType.OPEN)
+        return if (lobby) false
+        else !PermCheck.quick(this, location, ActionType.OPEN)
     }
 
 }
