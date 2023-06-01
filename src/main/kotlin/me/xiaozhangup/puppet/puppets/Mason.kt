@@ -25,7 +25,7 @@ object Mason {
                     puppet.display("")
                 }
             } else {
-                blocks.random().type = Material.COBBLESTONE
+                blocks.random().setType(Material.COBBLESTONE, false)
             }
         }
     }

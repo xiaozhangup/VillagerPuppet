@@ -24,7 +24,7 @@ object Fletcher {
             } else {
                 val block = air.random()
                 if (block.location.add(0.0, -1.0, 0.0).block.type == Material.GRASS_BLOCK) {
-                    block.type = getRandomTulip()
+                    block.setType(getRandomTulip(), false)
                 }
                 puppet.display("")
             }

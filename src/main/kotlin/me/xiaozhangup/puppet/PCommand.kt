@@ -1,7 +1,9 @@
 package me.xiaozhangup.puppet
 
+import me.xiaozhangup.puppet.loader.PuppetData.puppets
 import me.xiaozhangup.puppet.misc.PuppetType
 import me.xiaozhangup.puppet.misc.asItemStack
+import me.xiaozhangup.puppet.utils.PMessage.error
 import me.xiaozhangup.puppet.utils.PMessage.info
 import org.bukkit.entity.Player
 import taboolib.common.LifeCycle
@@ -32,6 +34,16 @@ object PCommand {
             execute<Player> { sender, _, _ ->
                 for (type in PuppetType.values()) {
                     sender.giveItem(type.asItemStack())
+                }
+            }
+        }
+
+        command("puppetinfo", permissionDefault = PermissionDefault.TRUE) {
+            execute<Player> { sender, _, _ ->
+                val puppets = sender.world.puppets()
+                sender.error("这个世界目前放置了 ${puppets?.size ?: 0} 个人偶,详细如下:")
+                for (type in PuppetType.values()) {
+                    sender.info("- ${type.cn}: 总计 ${puppets?.filter { it.type == type }?.size ?: 0} 个")
                 }
             }
         }

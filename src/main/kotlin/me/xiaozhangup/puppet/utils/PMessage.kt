@@ -12,6 +12,6 @@ object PMessage {
     }
 
     fun Player.error(string: String) {
-        this.sendMessage(minimessage.deserialize("$prefix <color:#ad5d5d>$string</color>"))
+        this.sendMessage(minimessage.deserialize("$prefix <color:#bf8181>$string</color>"))
     }
 }

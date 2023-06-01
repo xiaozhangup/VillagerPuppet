@@ -4,6 +4,7 @@ import ink.ptms.adyeshach.core.event.AdyeshachEntityInteractEvent
 import me.xiaozhangup.puppet.VillagerPuppet
 import me.xiaozhangup.puppet.VillagerPuppet.hasPerm
 import me.xiaozhangup.puppet.loader.PuppetData.asPuppet
+import me.xiaozhangup.puppet.loader.PuppetData.puppets
 import me.xiaozhangup.puppet.loader.PuppetMenu.openControl
 import me.xiaozhangup.puppet.misc.Puppet
 import me.xiaozhangup.puppet.utils.PEntity.tryPlacePuppet
@@ -20,6 +21,8 @@ import taboolib.common.platform.event.SubscribeEvent
 import taboolib.platform.util.buildBook
 
 object PuppetInteract {
+
+    private const val limit = 32
 
     @SubscribeEvent
     fun place(e: PlayerInteractEvent) {
@@ -57,8 +60,12 @@ object PuppetInteract {
                 if (it.id.startsWith("puppet-") && it.getLocation().distance(loc) < 3) {
                     e.player.error("这个位置附近已经有一个人偶了!")
                 } else {
-                    e.player.tryPlacePuppet(puppet, loc)
-                    item.amount -= 1
+                    if ((e.player.world.puppets()?.size ?: 0) < limit) {
+                        e.player.tryPlacePuppet(puppet, loc)
+                        item.amount -= 1
+                    } else {
+                        e.player.error("这个世界已经放置了 $limit 给人偶了,不能再放置更多了!")
+                    }
                 }
             }
         }

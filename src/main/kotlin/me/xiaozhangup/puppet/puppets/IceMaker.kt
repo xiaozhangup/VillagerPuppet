@@ -32,7 +32,7 @@ object IceMaker {
                         puppet.setData("full", "true")
                     } else {
                         puppet.display("")
-                        block.type = Material.WATER
+                        block.setType(Material.WATER, false)
                     }
                 } else {
                     puppet.display("&c范围内没有水或冰 :(".applyColor())

@@ -30,7 +30,7 @@ object Miner {
             val blocks = puppet.getUnderBlocks(puppet.level, -1.0)
             val stones = blocks.filter { it.type == Material.STONE }
             if (stones.isNotEmpty()) {
-                stones.random().type = getRandomOre(puppet.level)
+                stones.random().setType(getRandomOre(puppet.level), false)
             } else {
                 val ores =
                     blocks.filter { it.type.toString().endsWith("_ORE") }
@@ -46,7 +46,7 @@ object Miner {
                             break
                         } else {
                             puppet.display("")
-                            block.type = Material.STONE
+                            block.setType(Material.STONE, false)
                         }
                     }
                 }
