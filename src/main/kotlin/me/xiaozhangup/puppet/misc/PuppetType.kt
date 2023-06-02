@@ -26,7 +26,7 @@ enum class PuppetType(val cn: String, val skull: String, val hand: ItemStack, va
         "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDAxZTAzNWEzZDhkNjEyNjA3MmJjYmU1MmE5NzkxM2FjZTkzNTUyYTk5OTk1YjVkNDA3MGQ2NzgzYTMxZTkwOSJ9fX0=",
         buildItem(Material.STONE_HOE),
         "种植和收割附近的作物",
-        "种植和收割附近N格内同高的成熟作物,例如小麦,可可豆,但不可收割西瓜和南瓜 (N为人偶等级)."
+        "种植和收割附近N格内同高的成熟作物,例如小麦,可可豆,地狱疣等但不可收割西瓜和南瓜,甘蔗,仙人掌等 (N为人偶等级)."
     ),
     MASON(
         "石匠",

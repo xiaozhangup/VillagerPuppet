@@ -38,7 +38,7 @@ object VillagerPuppet : Plugin() {
     }
 
     fun Player.hasPerm(location: Location): Boolean {
-        return if (lobby) false
+        return if (lobby) this.isOp
         else !PermCheck.quick(this, location, ActionType.OPEN)
     }
 

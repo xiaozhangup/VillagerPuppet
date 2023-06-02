@@ -21,7 +21,7 @@ object Farmer {
             val blocks = puppet.getUnderBlocks(level, 0.0).filter { it.blockData is Ageable }
 
             if (blocks.isEmpty()) {
-                puppet.display("&c范围内没作物 :(".applyColor())
+                puppet.display("&c范围内没有作物 :(".applyColor())
             } else {
                 for (block in blocks) {
                     val age = block.blockData as Ageable
