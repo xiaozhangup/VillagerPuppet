@@ -4,9 +4,7 @@ import me.xiaozhangup.puppet.events.event.PuppetWorkEvent
 import me.xiaozhangup.puppet.misc.PuppetType
 import me.xiaozhangup.puppet.utils.PCheck.getUnderBlocks
 import me.xiaozhangup.puppet.utils.PUtils.applyColor
-import org.bukkit.Material
 import org.bukkit.block.data.Ageable
-import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.event.SubscribeEvent
 
 object Farmer {

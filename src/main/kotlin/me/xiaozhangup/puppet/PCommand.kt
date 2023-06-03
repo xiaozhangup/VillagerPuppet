@@ -8,7 +8,6 @@ import me.xiaozhangup.puppet.utils.PMessage.info
 import org.bukkit.entity.Player
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
-import taboolib.common.platform.command.CommandContext
 import taboolib.common.platform.command.PermissionDefault
 import taboolib.common.platform.command.command
 import taboolib.platform.util.giveItem

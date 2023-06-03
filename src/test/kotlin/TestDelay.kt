@@ -1,4 +1,1 @@
-class TestDelay {
-
-
-}
+class TestDelay

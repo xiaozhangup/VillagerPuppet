@@ -1,6 +1,5 @@
 package me.xiaozhangup.puppet.puppets
 
-import ink.ptms.adyeshach.module.editor.meta.impl.MetaItem
 import me.xiaozhangup.puppet.events.event.PuppetWorkEvent
 import me.xiaozhangup.puppet.misc.PuppetType
 import me.xiaozhangup.puppet.utils.PCheck.getUnderBlocks

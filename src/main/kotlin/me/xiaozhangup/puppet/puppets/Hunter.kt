@@ -2,16 +2,8 @@ package me.xiaozhangup.puppet.puppets
 
 import me.xiaozhangup.puppet.events.event.PuppetWorkEvent
 import me.xiaozhangup.puppet.misc.PuppetType
-import me.xiaozhangup.puppet.utils.PCheck.getUnderBlocks
-import me.xiaozhangup.puppet.utils.PUtils.applyColor
-import org.bukkit.Location
-import org.bukkit.Material
-import org.bukkit.Particle
-import org.bukkit.entity.Creeper
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Monster
-import org.bukkit.entity.Sheep
-import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.event.SubscribeEvent
 
 object Hunter {

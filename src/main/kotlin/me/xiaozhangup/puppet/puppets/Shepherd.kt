@@ -11,8 +11,6 @@ import org.bukkit.inventory.ItemStack
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.event.SubscribeEvent
-import taboolib.platform.util.buildItem
-import java.util.EnumMap
 import kotlin.random.Random
 
 object Shepherd {

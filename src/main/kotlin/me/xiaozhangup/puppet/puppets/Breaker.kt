@@ -34,14 +34,14 @@ object Breaker {
             //采集结束
 
             for (block in blocks.filter { it.state !is Container }) {
-                    if (!puppet.addItem(block.getDrops(tool).toList())) {
-                        puppet.display("&c人偶背包已满 :(".applyColor())
-                        puppet.setData("full", "true")
-                        break
-                    } else {
-                        puppet.display("")
-                        block.type = Material.AIR
-                    }
+                if (!puppet.addItem(block.getDrops(tool).toList())) {
+                    puppet.display("&c人偶背包已满 :(".applyColor())
+                    puppet.setData("full", "true")
+                    break
+                } else {
+                    puppet.display("")
+                    block.type = Material.AIR
+                }
             }
         }
     }
