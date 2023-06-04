@@ -24,7 +24,7 @@ import taboolib.platform.util.buildBook
 
 object PuppetInteract {
 
-    private const val limit = 32
+    const val limit = 32
 
     @SubscribeEvent
     fun place(e: BlockPlaceEvent) {
