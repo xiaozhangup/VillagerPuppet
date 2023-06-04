@@ -13,6 +13,8 @@ import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.entity.Player
 import taboolib.common.platform.Plugin
+import taboolib.module.configuration.Config
+import taboolib.module.configuration.Configuration
 import taboolib.platform.BukkitPlugin
 import java.util.concurrent.ConcurrentHashMap
 
@@ -23,7 +25,12 @@ object VillagerPuppet : Plugin() {
     val gson: Gson by lazy { Gson() }
     val manager by lazy { Adyeshach.api().getPublicEntityManager(ManagerType.TEMPORARY) }
     val finder by lazy { Adyeshach.api().getEntityFinder() }
-    val lobby by lazy { Bukkit.getServer().name == "lobby" }
+
+    @Config
+    lateinit var config: Configuration
+        private set
+
+    val slimecargo by lazy { config.getBoolean("hook.slimecargo") }
 
     val puppets: ConcurrentHashMap<World, MutableList<Puppet>> = ConcurrentHashMap()
 
@@ -38,8 +45,8 @@ object VillagerPuppet : Plugin() {
     }
 
     fun Player.hasPerm(location: Location): Boolean {
-        return if (lobby) this.isOp
-        else return !PermCheck.quick(this, location, ActionType.OPEN)
+        return if (slimecargo) !PermCheck.quick(this, location, ActionType.OPEN)
+        else return this.isOp
     }
 
 }

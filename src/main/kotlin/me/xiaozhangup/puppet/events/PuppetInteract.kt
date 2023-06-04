@@ -29,9 +29,10 @@ object PuppetInteract {
     @SubscribeEvent
     fun place(e: BlockPlaceEvent) {
         val item = e.itemInHand
-        if (!e.player.hasPerm(e.player.location)) return
         if (item.getMetaString("type").isNotEmpty()) {
             e.isCancelled = true
+            if (!e.player.hasPerm(e.player.location)) return
+
             val puppet = item.asPuppet(e.player)
 
             if (e.hand != EquipmentSlot.HAND) return
