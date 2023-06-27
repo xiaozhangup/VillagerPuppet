@@ -1,5 +1,6 @@
 package me.xiaozhangup.puppet.puppets
 
+import me.xiaozhangup.puppet.events.event.PuppetBreakEvent
 import me.xiaozhangup.puppet.events.event.PuppetWorkEvent
 import me.xiaozhangup.puppet.misc.PuppetType
 import me.xiaozhangup.puppet.utils.PUtils.applyColor
@@ -41,6 +42,9 @@ object Breaker {
                 } else {
                     puppet.display("")
                     block.type = Material.AIR
+                    PuppetBreakEvent(puppet, block).apply {
+                        call()
+                    }
                 }
             }
         }

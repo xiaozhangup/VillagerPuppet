@@ -130,7 +130,8 @@ data class Puppet(
     }
 
     fun asItemStack(): ItemStack {
-        val item = buildItem(getHead()) {
+        val item = buildItem(Material.PLAYER_HEAD) {
+            skullTexture = ItemBuilder.SkullTexture(type.skull)
             name = "&f${type.cn}人偶 &7(等级: $level)"
             lore += "&7右键放置到地上来使用"
             lore += "&7左键查看说明书"
