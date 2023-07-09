@@ -45,7 +45,7 @@ object VillagerPuppet : Plugin() {
     }
 
     fun Player.hasPerm(location: Location): Boolean {
-        return if (slimecargo) !hasPermission(location, ActionType.OPEN)
+        return if (slimecargo) hasPermission(location, ActionType.OPEN)
         else return this.isOp
     }
 
