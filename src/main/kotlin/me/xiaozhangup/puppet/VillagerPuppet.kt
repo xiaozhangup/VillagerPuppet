@@ -6,8 +6,8 @@ import ink.ptms.adyeshach.core.entity.manager.ManagerType
 import me.xiaozhangup.puppet.loader.PuppetData
 import me.xiaozhangup.puppet.loader.PuppetData.savePuppets
 import me.xiaozhangup.puppet.misc.Puppet
-import me.xiaozhangup.slimecargo.events.prot.control.ActionType
-import me.xiaozhangup.slimecargo.events.prot.control.PermCheck
+import me.xiaozhangup.slimecargo.listeners.protect.utils.ActionType
+import me.xiaozhangup.slimecargo.listeners.protect.utils.CheckUtils.hasPermission
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
@@ -45,7 +45,7 @@ object VillagerPuppet : Plugin() {
     }
 
     fun Player.hasPerm(location: Location): Boolean {
-        return if (slimecargo) !PermCheck.quick(this, location, ActionType.OPEN)
+        return if (slimecargo) !hasPermission(location, ActionType.OPEN)
         else return this.isOp
     }
 
